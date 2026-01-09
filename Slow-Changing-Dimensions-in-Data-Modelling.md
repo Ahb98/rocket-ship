@@ -17,6 +17,14 @@ Foundry value vs others:
 - Strong dataset immutability and lineage make it simple to prove Type 0 attributes never change over time.
 - Governance (permissions, lineage) is native; no separate catalog or glue code as in cloud-native stacks.
 
+```mermaid
+flowchart LR
+    A["Source Snapshot/Delta"] --> B["Detect New Business Keys"]
+    C["Previous Dimension"] --> B
+    B --> D["Insert New Rows Only"]
+    D --> E["Type 0 Dimension (Fixed Attributes)"]
+```
+
 ### Insurance example (customer DOB fixed)
 
 ```python
