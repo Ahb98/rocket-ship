@@ -22,9 +22,10 @@ title: "Slow Changing Dimensions - A Palantir Foundry Perspective"
 ## TL;DR  
 Palantir Foundry outshines other data pipeline solutions (AWS, GCP, Azure ADF, DataBricks, Spark Declarative Pipelines) in handling of Slow-Chaning dimensions, esp. when it comes to mission critical enterprise data - high voloume, high variety, high scrutiny, lineage and auditability, high security.
 This is a summary view of all the benefits of Foundry.  
-
-<div class="mermaid">
-```mermaid
+    
+    
+```mermaid    
+<div class="mermaid">  
 flowchart TD
     A["Source Systems (Snapshots / Deltas / CDC)"]
 
@@ -70,8 +71,9 @@ flowchart TD
     N --> Q
     O --> Q
     P --> Q
-```
-</div>
+</div>    
+```      
+    
         
 We'll dig deeper, use 2 kinds of examples - insurance and supply chain - because the domains are fairly different, so it gives us a more comprehensive idea of how the concepts work.
   
