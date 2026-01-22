@@ -1,6 +1,9 @@
 # Self‑Declarative Pipelines: A Palantir Foundry Perspective (with Foundry‑Native Examples)
 
 ## Collab
+1. [Ankita Hatibaruah](https://github.com/Ahb98), [LinkedIn](http://linkedin.com/in/ankita-hatibaruah-bb2a62218)
+2. [Pavithra Ananthakrishnan](https://github.com/Pavi-245), [LinkedIn](https://www.linkedin.com/in/pavithra-ananthakrishnan-552416244/)
+3. [Sree Bhavya Kanduri](https://github.com/sreebhavya10), [LinkedIn](https://www.linkedin.com/in/kanduri-sree-bhavya-4001a6246?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
 
 ## TL;DR
 Spark 4.1’s Spark Declarative Pipelines (SDP) popularize a dataset‑centric approach, declare the datasets and queries; let the engine plan and run the graph. In Palantir Foundry, you build the same kind of pipelines using Transforms (@transform, @transform_df, @incremental) that materialize datasets and are orchestrated by Pipelines with scheduling, lineage, and governance built‑in. 
