@@ -14,7 +14,7 @@ Data engineering is moving from imperative, job‑centric orchestration to datas
 ## What SDP Is (and how it maps)
 - SDP introduces flows, datasets (streaming tables, materialized views, temporary views), and a pipeline spec to run.
 - Foundry maps naturally:
-    - SDP flow → Foundry Transform reading Inputs and writing one or more Outputs.
+- SDP flow → Foundry Transform reading Inputs and writing one or more Outputs.
 	- SDP materialized view → Persisted transform output dataset (the canonical way to “materialize” in Foundry).
 	- SDP temporary view → Intermediate dataset (or a Foundry View if you want read‑time union/dedup without storing new files).
 	- SDP graph execution → Foundry Pipelines + schedules + Lineage to monitor dependencies and impact.
