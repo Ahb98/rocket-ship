@@ -62,11 +62,11 @@ Spark Connect continues to mature as the default client-server architecture.
 
 ### What’s new:
 
-### - Spark ML on Connect is GA for Python
+#### Spark ML on Connect is GA for Python
 - Smarter model caching
 - Improved memory management
 
-### - Better stability for large workloads:
+#### Better stability for large workloads:
 - Zstandard (zstd) compressed protobuf plans
 - Chunked Arrow result streaming
 - Improved handling of large local relations
@@ -81,17 +81,17 @@ Spark SQL sees major usability and performance upgrades.
 
 ### Highlights:
 
-### - SQL Scripting GA (enabled by default)
+#### SQL Scripting GA (enabled by default)
 - Cleaner variable declarations
 - Improved error handling
 
-### - VARIANT data type GA
+#### VARIANT data type GA
 - Efficient shredding
 - Faster reads for semi-structured data (JSON-like)
 
-### - Recursive CTE support
+#### Recursive CTE support
 
-### - New approximate data sketches
+####  New approximate data sketches
 - KLL sketches
 - Theta sketches
 
