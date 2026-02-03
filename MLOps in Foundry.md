@@ -45,7 +45,7 @@ Core Architectural Elements:
 - Model Artifacts + Adapters: Models are packaged with metadata and adapters that standardize inference and deployment.
 
 - Modeling Objectives: Serve as the control plane for experimentation, evaluation, promotion, and deployment of models tied to business objectives.
-[Modelling Objective](https://github.com/achaudhury7378/rocket-ship/blob/patch-2/images/Screenshot%202026-02-03%20214523.png)
+![Modelling Objective](https://github.com/achaudhury7378/rocket-ship/blob/patch-2/images/Screenshot%202026-02-03%20214523.png)
 
 This architecture tightly couples features, experiments, models, and deployments into a single lifecycle.
   
