@@ -385,6 +385,16 @@ Palantir Foundry automatically recomputes downstream datasets when upstream data
 ```bash
 raw/claims → cleaned_claims → enriched_claims → risk_metrics
 ```
+If raw/claims receives new data:
+
+Foundry automatically:
+
+Detects dataset version change
+Marks downstream datasets stale
+Recomputes affected transforms
+Produces new downstream versions
+Updates lineage graph
+No manual trigger required.
 
 Traditional Cloud
 
@@ -406,6 +416,8 @@ Governance teams
 Operations users
 Business users
 Shared context + shared lineage + shared objects.
+
+Palantir Foundry provides a unified platform experience where data engineers, analysts, governance teams, and operations users work on the same datasets, lineage graphs, ontology objects, and security policies. Instead of spreading responsibilities across separate engineering, catalog, BI, and governance tools, Foundry centralizes metadata, lineage, and governance directly alongside pipeline development and analytics. This shared context reduces tool fragmentation, prevents metadata drift, and enables faster cross-team collaboration and troubleshooting.
 
 Traditional Cloud
 
@@ -430,6 +442,22 @@ Case investigation
 Audit trails tied to data objects
 This is rare in cloud analytics stacks.
 
+What is Human-in-the-Loop?
+
+Human-in-the-loop means:
+
+A pipeline or model produces results →
+A human reviews →
+A human can approve/reject/modify →
+That decision becomes part of the governed data record.
+```bash
+Model flags transaction as fraud
+→ Analyst reviews
+→ Analyst overrides decision
+→ Override is recorded + auditable
+
+```
+Palantir Foundry supports human-in-the-loop data workflows where automated pipeline or model outputs can be reviewed, approved, overridden, and investigated directly within the platform. Review queues, approval workflows, manual overrides, and case investigations are built on top of ontology objects and governed datasets, with every human action automatically audited and linked to the underlying data entities. This tightly integrated human-decision layer is uncommon in traditional cloud analytics stacks, which typically require separate case management and workflow systems integrated alongside the data platform.
 
 10. Regulated & Mission-Critical Environment Strength
 
@@ -439,6 +467,8 @@ Auditability matters
 Access control is strict
 Decisions must be traceable
 Data + decisions must be linked
+
+Palantir Foundry is particularly strong in environments where compliance, auditability, strict access control, and decision traceability are critical. Its native dataset versioning, automatic lineage, policy-aware security, ontology-driven object model, and human-in-the-loop workflows allow organizations to link data, decisions, and actions in a fully governed and auditable system — something that typically requires multiple integrated tools in traditional cloud data platforms.
 
 Common in:
 Defense
