@@ -1,6 +1,5 @@
----
+
 # Accelerating GenAI Development with Palantir Foundry
----
 
 
 ## Introduction
