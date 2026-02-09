@@ -17,6 +17,8 @@ For Architects and CTOs, the decision usually falls into two camps:
 
 - **Platform Approach**: An integrated operating system like Palantir Foundry that unifies data, security, AI, and applications. 
 
+![Hyperscalers vs Palantir](images/hyperscaler_vs_palantir.png?raw=true)
+
 The primitive approach maximizes flexibility and is attractive to teams that want fine-grained control over every component. The trade-off is a significant "Integration Tax" in Time-to-Market and ongoing maintenance. Let's see why, in many enterprise scenarios, Foundry ends up delivering faster and with less operational overhead.
 
 
@@ -130,89 +132,7 @@ Foundry’s model:
 For organizations with stringent compliance and audit requirements, this integrated approach often shortens security review cycles compared to a fully custom stack.
 
 
-## End-to-End Example: Incident Triage Agent (Azure vs. Foundry) 
-Assume you want an **Incident Triage Agent** that: 
-- Reads an incident ticket 
-- Summarizes it Finds similar past incidents and asset history 
-- Suggests remediation steps 
-- Optionally creates a work order if confidence is high 
-
-### DIY Azure Stack (Sketch) 
-Typical tech stack: 
-- Data: Azure Data Lake / SQL / Databricks 
-- LLM: Azure OpenAI 
-- Retrieval: Azure AI Search or a vector database 
-- Orchestration: LangChain / Semantic Kernel + Python service 
-- Frontend: Custom React app + API 
-
-High-level steps: 
-- Build pipelines to ingest Incidents, Assets, WorkOrders into your lake/warehouse. 
-- Set up a RAG pipeline (chunk, embed, index in Azure AI Search). 
-- Implement the agent logic in Python, for example: 
-
-```
-pythonRun CodeCopy code
-from langchain.chat_models import AzureChatOpenAI
-from langchain.agents import initialize_agent, Tool 
-
-def search_similar_incidents(query: str) -> str:     
-    # Query Azure AI Search index ...
-
-def get_asset_context(asset_id: str) -> str:     
-    # Query SQL / API for asset and maintenance history...
-
-def create_work_order(incident_id: str, recommendation: str) -> str:     
-    # Call ITSM / SAP PM API... 
-    
-tools = [
-    Tool(name="search_similar_incidents", func=search_similar_incidents),
-    Tool(name="get_asset_context", func=get_asset_context),
-    Tool(name="create_work_order", func=create_work_order),
-] 
-llm = AzureChatOpenAI(deployment_name="gpt-4") 
-agent = initialize_agent(tools, llm, agent="chat-conversational-react-description") 
-
-def handle_incident(incident_id, user_input):
-    # Fetch incident text from DB, pass to agent
-```
-
-Build a frontend, integrate authentication/authorization, and connect to the backend service. Implement evaluation via custom logging and offline tests (e.g., notebooks, Prompt Flow). 
-
-Time to a robust, production-ready version can be several months, depending on data complexity, security requirements, and team experience. The benefit is maximum control over each component; the cost is higher integration and maintenance effort. 
-
-### Foundry Implementation (Sketch) 
-Typical tech stack: 
-- Data + Ontology: Foundry (Incident, Asset, WorkOrder objects) 
-- LLM + Logic: AIP Logic + AIP Agent Studio 
-- Frontend: Foundry Workshop app 
-
-High-level steps: 
-
-Map data into the Ontology: 
-- Incident linked to Asset and WorkOrder. 
-- Create Ontology Actions: 
-    - Search_Related_Incidents(Incident) 
-    - Get_Asset_Context(Asset) 
-    - Create_WorkOrder(Incident, Recommendation) 
-- In Agent Studio, bind these actions as tools and configure the agent via prompts and settings rather than raw JSON schemas. 
-
-In AIP Logic, design the workflow visually: 
-- Summarize the incident 
-- Call Search_Related_Incidents and Get_Asset_Context 
-- Ask the model to propose remediation and estimate confidence 
-- Call Create_WorkOrder if confidence exceeds a threshold (or seek user confirmation) 
-
-In Workshop, build an app: 
-- Incident list and detail view bound directly to Ontology objects 
-- An agent panel that uses the selected Incident as context automatically 
-
-Set up AIP Evals: 
-- Test the agent on historical incidents 
-- Use LLM-as-a-judge to score quality and safety 
-- Incorporate user feedback from the app into subsequent eval runs 
-
-Most of this is done within a single platform, with fewer separate services to integrate.
-In many organizations, this reduces end-to-end delivery time to a few months or less, with a more straightforward security and governance story.
+<!--   -->
 
 
 ## Conclusion
