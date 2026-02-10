@@ -137,33 +137,42 @@ Typical tech stack:
 - LLM + Logic: AIP Logic + AIP Agent Studio
 - Frontend: Foundry Workshop app
 
-### Foundry Implementation
-
-Say we have the following Ontology objects already created and powering up our existing operational workflows. Now we want to add a Agentic workflow that automates the creation of work order based on the incident's description.
+Say you have the following Ontology objects already created and powering up existing operational workflows. Now you want to add a Agentic workflow that automates the creation of work order based on the incident's description.
 
 Ontology have 4 objects - **Incident**, **Asset**, **Work Order**, **Maintenance Event**
 Incidents are linked to Assets and Work Orders and Assets ar linked to Maintenance events
-We also have a action associated with Work Order to create a new work order.
-<!-- example image -->
+There's also an action associated with Work Order to create a new work order.
+![ontology](images/genai_ontology.png?raw=True)
 
 In Agent Studio, we can create agent that leverages the ontology objects and links bind the actions as tools and configure the agent via prompts and settings rather than raw JSON schemas.
 
-<!-- agent-studio -->
+We can select one of the LLM model available on foundry and give it below system prompt.
 
-In Workshop, we can build an app that shows Incident list and detail view bound directly to Ontology objects
-An agent panel that uses the selected Incident as context automatically and summarizes and provides actions to user
+```
+You are an Incident Triage Specialist. When an incident is selected, investigate its description and summarize the incident in 1-2 lines. Use the Query objects with SQL tool to find past Maintenance Events for the linked Asset. If a similar issue occurred before, suggest the same fix and output a resolution note in 1-2 lines. 
+Finally, use the Create Work Order tool to draft a resolution.
+If Incident is already closed don't suggest any resolution  or create work order.
+```
 
-<!-- workshop-application -->
+![agent-studio](images/genai_agent_studio.png?raw=True)
 
-Setup the action as a tool to allow agent to create a work order and query tool to traverse the ontology links to find similar incidents.
+Setup the tools for LLM to use
+1. Action - this will allow LLM to trigger the create a work order action
+2. Query tool - this will allow LLM to traverse the ontology links to find similar historical incidents and work orders.
 
-<!-- genai-tools -->
+![genai-tools](images/genai_tools.png?raw=True)
 
-Set up AIP Eval, to test the agent on historical incidents, Use LLM-as-a-judge to score quality.
-<!-- genai-evals -->
+Set up AIP Eval, to test the agent on historical incidents, 
+Use keyword checker to check if LLM is identifying correct keywords and Use LLM-as-a-judge to score quality of generated summary and resolution text.
+![genai-evals](images/genai_evals.png?raw=True)
+
+Now using Workshop, you can build an app that displays Incident list and detail view bound directly to Ontology objects. Whenever a row is clicked on table it open up a overlay, where the agent panel uses the selected Incident as context and summarizes and proposes a work order draft action and ask user for approval for better governance.
+
+The user can additionally give feedback about the reply using the thumbs up/down button.
+![genai-workshop-app](images/genai_workshop_app.png?raw=True)
 
 
-All of this is done within a single platform, with fewer separate services to integrate. This reduces end-to-end delivery time to a few weeks or less, with a more straightforward security and governance story.
+All of this is done within a single platform, with fewer separate services to integrate or writing any complex to code. This reduces end-to-end delivery time to a few weeks or less, with a more straightforward security and governance story.
 
 
 ## Conclusion
