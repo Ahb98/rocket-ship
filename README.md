@@ -95,6 +95,8 @@
             <h4 style="margin-top: 15px !important; margin-bottom: 5px !important;">Collaborators:</h4>
             <ol style="margin-top: 0 !important;">
                 <li><a href="https://github.com/harsh-gautam">Harsh Gautam</a>, <a href="https://www.linkedin.com/in/harsh-gautam27/">LinkedIn</a></li>
+                <li><a href="https://github.com/vrindamakkar">Vrinda Makkar</a>, <a href="https://www.linkedin.com/in/vrinda-makkar/">LinkedIn</a></li>
+                <li><a href="https://github.com/chinmay08">Chinmay Sutar</a>, <a href="https://www.linkedin.com/in/chinmay-sutar-a40135141/">LinkedIn</a></li>
             </ol>
         </td>
     </tr>
