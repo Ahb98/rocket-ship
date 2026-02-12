@@ -4,7 +4,7 @@
     <img src="./images/rocket-ship-03.png" width="95%" style="border: 0 !important; outline: none !important; box-shadow: none !important;" alt="A ship that runs on rockets, because engineering, Image © Shaurya Agarwal, 2026" />
 </div>
 
-<p align="center">Long-form posts on data engineering and technology in collaboration with my team</p>
+<p align="center">Long-form posts on AI, machine learning, data engineering and other technology topics, in collaboration with my team</p>
 
 <hr />
 
