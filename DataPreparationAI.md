@@ -46,6 +46,7 @@ Raw Structured Data -> Data Issue Identification -> Standardized Cleaning & Vali
 In Palantir Foundry, identifying issues early helps define what cleaning logic, validation checks, and reusable transformations should be built into pipelines. Even structured tables develop recurring quality problems due to manual inputs, system migrations, and multiple source integrations.
 Below are the most common issues specifically aligned to our datasets, along with resolution strategies. These recurring patterns allow us to design standardized, reusable cleaning logic in Foundry that can be applied consistently across pipelines instead of solving data quality issues in isolation each time.
 
+
 | Issue Type | Example (as per Dataset) | Cleaning Approach |
 |------------|--------------------------|-------------------|
 | **Missing Values** | customer_age missing in Customer table;<br>unit_price null in Product Inventory;<br>quantity missing in Sales Transactions | • Impute numeric analytical fields using 0, mean, or median where appropriate<br>• Fill descriptive fields like region or sales_rep with placeholders such as "Unknown"<br>• Track null patterns using data quality checks to catch recurring source issues |
@@ -56,6 +57,47 @@ Below are the most common issues specifically aligned to our datasets, along wit
 | **Whitespace & Hidden Characters** | product_code stored as " P001 ";<br>region as "North " | • Trim leading and trailing spaces across key columns<br>• Remove hidden/non-printable characters that break joins<br>• Standardize cleaned values before matching |
 | **Data Type Drift** | quantity stored as "2" (string) in some rows and numeric in others | • Enforce consistent casting to integer/decimal types during transformation<br>• Validate schema consistency across pipeline runs<br>• Monitor for drift using automated data quality checks |
 
+### Step 2: Data Cleaning & Quality Validation
+**Reusable Transformation Architecture**
+All datasets were processed using a shared utility.py module for consistent, reusable transformations. This utility layer provides standardized functions for null handling, format normalization, and business defaults, ensuring consistent, AI-ready data across all enterprise systems.
 
+Example utility functions:
 
+```
+Import pyspark.sql.functions as F
+Import pyspark.sql.types as T
+def trim_column(df, col):
+    return df.withColumn(col, F.trim(F.col(col)))
+
+def clean_age(df, col="age", default=38, min_age=1, max_age=120):
+    df = df.withColumn(col, F.col(col).cast(T.IntegerType()))
+    df = df.withColumn(col, F.coalesce(F.col(col), F.lit(default)))
+    return df.filter((F.col(col) >= min_age) & (F.col(col) <= max_age))
+
+```
+These reusable transformations standardize how data is cleaned across datasets. However, cleaning alone is not sufficient, and quality must also be enforced continuously as new data enters the system.
+
+**Enforcing Quality: Data Health Checks & Expectations**
+Cleaning existing data is only half the battle. The real value comes from preventing bad data from entering your AI pipeline. Foundry's expectation framework enables proactive quality enforcement during transformation, ensuring invalid records don't propagate downstream. This shift data quality from reactive fixing to proactive enforcement.
+
+Validations included:
+•	Numeric fields like price, quantity, and inventory must be non-negative
+•	Age constrained to realistic human ranges
+•	Core identifiers such as customer_id, product_id, and transaction_id must not be null
+•	Type enforcement for numeric and date columns
+
+These checks ensure that data quality rules are enforced during pipeline execution, preventing invalid records from flowing into downstream systems.
+Example expectation checks applied on the product dataset:
+```
+from transforms.api import transform, Input, Output, Check
+from transforms import expectations as E
+@transform.spark.using(
+    output=Output("clean_product_dataset", checks=[
+        Check(E.col("quantity_in_stock").gte(0), "quantity_in_stock must be >= 0"),
+        Check(E.col("price").gte(0), "price must be >= 0"),
+        Check(E.col("weight_kg").gte(0), "weight_kg must be >= 0"),
+    ]),
+    product_input=Input("raw_product_dataset"),
+)
+```
 
