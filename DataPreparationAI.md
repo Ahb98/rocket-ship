@@ -4,7 +4,8 @@ title: "Data Preparation for AI"
 ---
 
 # Data Preparation for AI
-[[<img src="https://media.licdn.com/dms/image/v2/D4D12AQFOtVwp75w1bA/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1727859342774?e=2147483647&v=beta&t=bGPo320M-76P5KipNZ_E1GTFgCMWQGipWVNWJNsrYqY" alt="Data Preparation for AI" /> ](https://www.google.com/imgres?q=data%20preparation%20for%20ai%20images&imgurl=https%3A%2F%2Fwww.actian.com%2Fwp-content%2Fuploads%2F2023%2F12%2Fdata-preparation-for-AI.jpg&imgrefurl=https%3A%2F%2Fwww.actian.com%2Fdata-preparation-for-ai%2F&docid=Fg-Tr6vkts6ZiM&tbnid=aLWA-a297VupqM&vet=12ahUKEwj9-L6hzuCSAxVFzzgGHfBsBKEQnPAOegQIHxAB..i&w=815&h=500&hcb=2&ved=2ahUKEwj9-L6hzuCSAxVFzzgGHfBsBKEQnPAOegQIHxAB)](https://www.google.com/imgres?q=data%20preparation%20for%20ai%20images&imgurl=https%3A%2F%2Fwww.actian.com%2Fwp-content%2Fuploads%2F2023%2F12%2Fdata-preparation-for-AI.jpg&imgrefurl=https%3A%2F%2Fwww.actian.com%2Fdata-preparation-for-ai%2F&docid=Fg-Tr6vkts6ZiM&tbnid=aLWA-a297VupqM&vet=12ahUKEwj9-L6hzuCSAxVFzzgGHfBsBKEQnPAOegQIHxAB..i&w=815&h=500&hcb=2&ved=2ahUKEwj9-L6hzuCSAxVFzzgGHfBsBKEQnPAOegQIHxAB)
+![download](https://github.com/user-attachments/assets/be93813a-dfa4-4ebf-a22c-7a30a525599d)
+
 
 ## Collab     
 1. [Pavan Kumar Busetty](https://github.com/pavankumarbusetty), [LinkedIn](https://www.linkedin.com/in/pavankumar-busetty/)
@@ -326,3 +327,41 @@ Embeddings capture:<br>
 -	Context
 -	Topic
 ```Output → One vector per chunk → AI‑ready representation.```
+
+<img width="669" height="281" alt="image" src="https://github.com/user-attachments/assets/21784e03-1b4f-4982-be6a-05b74b8d6a23" />
+
+#### Step 7 — Store Output as Ontology Objects
+Final embeddings are stored as Ontology Object Types.<br>
+
+This enables:<br>
+-	Semantic search
+-	Vector retrieval
+-	Document understanding
+-	Meaning-based reasoning
+-	Full lineage (File → Page → Chunk → Embedding)
+
+#### Step 8 — Similarity Search & Retrieval
+
+User queries are converted into embeddings → compared via **cosine similarity**.
+High cosine score = semantically similar meaning.<br>
+Applications:<br>
+-	AI copilots
+-	Smart search
+-	Claims automation
+-	Policy comparison
+-	Context-aware Q&A
+
+### Why This Pipeline Is Effective
+#### Capability Comparison: Pipeline Builder vs Typical No-Code Tools
+
+| Capability                 | Pipeline Builder        | Typical No-Code Tools |
+|----------------------------|--------------------------|------------------------|
+| **Unstructured Data Support** | ✓ Native                 | ✗ Limited              |
+| **Document Awareness**        | ✓ Pages + chunks         | ✗ Row-based            |
+| **Embeddings**                | ✓ Built-in               | ✗ Add-on               |
+| **OCR**                       | ✓ Integrated             | ✗ External             |
+| **Explainability**            | ✓ Full lineage           | ✗ Minimal              |
+| **AI Readiness**              | ✓ Designed for AI        | ✗ Retro-fitted         |
+
+
+
