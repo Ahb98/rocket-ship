@@ -312,17 +312,16 @@ Every dataset is automatically:
 - Reproducible
 - Rollback capable
 - Auditable
-Each version is tied to:
-- Input versions
-- Transform code
-- Execution context
-You can instantly answer:
-“What did this dataset look like 3 months ago?”
+- Each version is tied to:
+   - Input versions
+   - Transform code
+   - Execution context
+- You can instantly answer: “What did this dataset look like 3 months ago?”
 - Engineers can time-travel, compare versions, and roll back if needed.
-Traditional Cloud
-- Requires specific storage formats:
-- Delta Lake
-- Iceberg
+- Traditional Cloud
+   - Requires specific storage formats:
+   - Delta Lake
+   - Iceberg
 
 Additionally it requires:
 - Extra configuration
