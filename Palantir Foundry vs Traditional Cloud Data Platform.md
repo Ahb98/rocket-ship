@@ -293,7 +293,7 @@ Usually requires:
 - Custom deployment scripts
 - Manual data validation
 
--> Not platform-native.
+→ Not platform-native.
 
 ## 4. Dataset Versioning + Time Travel by Default
 
@@ -328,7 +328,7 @@ Additionally it requires:
 - Extra configuration
 - Retention policies
 - Storage planning
-➡️ Not universal across the stack.
+→ Not universal across the stack.
 
 ## 5. Policy-Aware Data — Security Travels With Data
 In Palantir Foundry, security is embedded directly into datasets and ontology objects, making data policy-aware by design.
@@ -374,7 +374,7 @@ Security is usually:
 - BI-specific
 - IAM-specific
 
-➡️ High policy drift risk across layers.
+→ High policy drift risk across layers.
 
 ## 6. Operational Applications Built Directly on Data
 
@@ -417,7 +417,7 @@ Requires:
 - Auth integration
 - Sync with analytics layer
 
-➡️ Higher system fragmentation.
+→ Higher system fragmentation.
 
 
 ## 7. Automatic Dependency Recompute
@@ -450,7 +450,7 @@ Requires:
 - Manual dependency modeling
 - Backfill scripting
 
-➡️ Operationally heavier.
+→ Operationally heavier.
 
 ## 8. Unified Governance + Engineering + Analytics UX
 
@@ -465,7 +465,7 @@ Different tools for:
 - BI
 
 Catalog
-➡️ Context fragmentation.
+→ Context fragmentation.
 
 ## 9. Human-in-the-Loop Data Workflows
 
