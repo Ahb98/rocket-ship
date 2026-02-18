@@ -53,9 +53,9 @@ Modern data platforms aim to solve:
 - Analytics
 Operational use cases:
 - Two dominant architectural approaches exist:
-- - **Approach A — Platform-Centric (Palantir Foundry)**  
+ - **Approach A — Platform-Centric (Palantir Foundry)**  
 Integrated, dataset-driven, execution managed by the platform.
-- - **Approach B — Tool-Centric (Traditional Cloud Stack)**  
+ - **Approach B — Tool-Centric (Traditional Cloud Stack)**  
 Service-driven, manually integrated components across the stack.<br>
 **This document compares both across architecture, pipeline development, governance, security, and operational usage**.
 
