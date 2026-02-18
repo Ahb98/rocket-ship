@@ -204,7 +204,7 @@ Input datasets → Transform → Output datasets
 
 ## Why Palantir Foundry Outperforms Traditional Cloud Data Platforms?
 This guide explains the architectural and operational advantages of Palantir Foundry compared to traditional cloud data platforms, especially in governed, operational, and mission-critical environments.
-## 1.Native Ontology Layer (Not Just Tables — Business Objects)
+## 1. Native Ontology Layer (Not Just Tables — Business Objects)
 
 Foundry provides a built-in Ontology layer that maps datasets into business entities instead of leaving them as raw tables.
 
@@ -261,7 +261,7 @@ Traditional Cloud
 - Metadata scanners
 - Manual tagging
 
-## 3.Built-In Dev → Test → Prod Promotion Model
+## 3. Built-In Dev → Test → Prod Promotion Model
 
 In Palantir Foundry, data pipelines behave like software releases, not just scheduled jobs.
 
