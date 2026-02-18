@@ -327,7 +327,7 @@ Additionally it requires:
 - Storage planning
 ➡️ Not universal across the stack.
 
-5. Policy-Aware Data — Security Travels With Data
+## 5. Policy-Aware Data — Security Travels With Data
 In Palantir Foundry, security is embedded directly into datasets and ontology objects, making data policy-aware by design.
 
 Supported controls include:
@@ -373,7 +373,7 @@ Security is usually:
 
 ➡️ High policy drift risk across layers.
 
-6. Operational Applications Built Directly on Data
+## 6. Operational Applications Built Directly on Data
 
 Palantir Foundry enables teams to build operational applications directly on governed datasets and ontology objects, not just analytics dashboards.
 
@@ -391,7 +391,7 @@ Actions taken in these apps are:
 - Linked to data objects
 
 
-# Foundry Architecture Pattern
+## Foundry Architecture Pattern
 ```bash
 Datasets
    ↓
@@ -417,7 +417,7 @@ Requires:
 ➡️ Higher system fragmentation.
 
 
-7. Automatic Dependency Recompute
+## 7. Automatic Dependency Recompute
 
 Palantir Foundry automatically recomputes downstream datasets when upstream data changes because execution is driven by dataset dependencies, not manually defined DAG jobs.
 
@@ -449,7 +449,7 @@ Requires:
 
 ➡️ Operationally heavier.
 
-8. Unified Governance + Engineering + Analytics UX
+## 8. Unified Governance + Engineering + Analytics UX
 
 Foundry provides a unified platform experience where Data engineers, Analysts, Governance teams, Operations users, Business users work on the same Datasets, Lineage graphs, Ontology objects, Security policies and Metadata.
 
@@ -464,7 +464,7 @@ Different tools for:
 Catalog
 ➡️ Context fragmentation.
 
-🔷 9. Human-in-the-Loop Data Workflows
+## 9. Human-in-the-Loop Data Workflows
 
 Human-in-the-loop means:
 
@@ -492,7 +492,7 @@ Human decisions are linked to ontology objects and fully audited.
 
 This tightly integrated decision layer is rare in traditional cloud analytics stacks
 
-10. Regulated & Mission-Critical Environment Strength
+## 10. Regulated & Mission-Critical Environment Strength
 
 Palantir Foundry is particularly strong in environments where compliance, auditability, strict access control, and decision traceability are critical. Its native dataset versioning, automatic lineage, policy-aware security, ontology-driven object model, and human-in-the-loop workflows allow organizations to link data, decisions, and actions in a fully governed and auditable system — something that typically requires multiple integrated tools in traditional cloud data platforms.
 
