@@ -334,17 +334,17 @@ Additionally it requires:
 In Palantir Foundry, security is embedded directly into datasets and ontology objects, making data policy-aware by design.
 
 Supported controls include:
-Row-level filters
-Column masking
-Object-level permissions
-Ontology-aware access rules
-Policy inheritance downstream
-When data flows → policies flow with it.
-Security rules are defined once and automatically enforced across:
-Transforms
-Notebooks
-Applications
-Analytics tools
+- Row-level filters
+- Column masking
+- Object-level permissions
+- Ontology-aware access rules
+- Policy inheritance downstream
+- When data flows → policies flow with it.
+- Security rules are defined once and automatically enforced across:
+  - Transforms
+  - Notebooks
+  - Applications
+  - Analytics tools
 
 Derived datasets inherit upstream protections, reducing policy drift.
 ```bash
