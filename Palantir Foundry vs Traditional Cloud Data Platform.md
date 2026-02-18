@@ -293,7 +293,7 @@ Usually requires:
 - Custom deployment scripts
 - Manual data validation
 
-➡️ Not platform-native.
+-> Not platform-native.
 
 ## 4. Dataset Versioning + Time Travel by Default
 
