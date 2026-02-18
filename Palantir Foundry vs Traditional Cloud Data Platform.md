@@ -272,7 +272,7 @@ Instead of manually managing environments and deployments, Foundry provides a na
 - Pipelines
 - Ontology changes
 - Applications
-This capability is built directly into the platform — not added through external CI/CD tooling.
+This capability is built directly into the platform, not added through external CI/CD tooling.
 
 Foundry Capabilities
 
@@ -493,7 +493,7 @@ Model flags transaction as fraud
 ```
 Human decisions are linked to ontology objects and fully audited.
 
-This tightly integrated decision layer is rare in traditional cloud analytics stacks
+This tightly integrated decision layer is rare in traditional cloud analytics stacks.
 
 ## 10. Regulated & Mission-Critical Environment Strength
 
