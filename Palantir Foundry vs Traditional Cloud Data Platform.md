@@ -497,7 +497,7 @@ This tightly integrated decision layer is rare in traditional cloud analytics st
 
 ## 10. Regulated & Mission-Critical Environment Strength
 
-Palantir Foundry is particularly strong in environments where compliance, auditability, strict access control, and decision traceability are critical. Its native dataset versioning, automatic lineage, policy-aware security, ontology-driven object model, and human-in-the-loop workflows allow organizations to link data, decisions, and actions in a fully governed and auditable system — something that typically requires multiple integrated tools in traditional cloud data platforms.
+Palantir Foundry is particularly strong in environments where compliance, auditability, strict access control, and decision traceability are critical. Its native dataset versioning, automatic lineage, policy-aware security, ontology-driven object model, and human-in-the-loop workflows allow organizations to link data, decisions, and actions in a fully governed and auditable system, something that typically requires multiple integrated tools in traditional cloud data platforms.
 
 Common in:
 - Defense
@@ -513,4 +513,4 @@ Common in:
 - Lightweight analytics use cases
 - Teams requiring full stack-level customization
 
-Palantir Foundry is not just a data platform — it is a data operating system that unifies pipelines, governance, lineage, ontology, and operational applications. Traditional cloud platforms can achieve similar outcomes, but typically require integrating and maintaining multiple independent tools.
+Palantir Foundry is not just a data platform, it is a data operating system that unifies pipelines, governance, lineage, ontology, and operational applications. Traditional cloud platforms can achieve similar outcomes, but typically require integrating and maintaining multiple independent tools.
