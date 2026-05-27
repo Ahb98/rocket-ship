@@ -129,12 +129,14 @@ Deletion vectors store deleted row positions using a Roaring Bitmap inside a Puf
 - RLE/Runs (consecutive deletes)
 
 Example: Same data file
+
 | Position | Customer |
 |----------|----------|
 | 0 | A |
 | 1 | B |
 | 2 | C |
 | 3 | D |
+
 
 Suppose, rows 1 and 3 are deleted. Conceptually the deletion vector stores [1, 3] using a Roaring Bitmap.
 
