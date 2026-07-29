@@ -38,20 +38,17 @@ Although all of these attempt to calculate ARPU, they may produce different answ
   
 Eventually people stop trusting the data. Instead of discussing business decisions,they spend hours discussing whose number is correct.
 
-The Spark 4.2 Solution
-Spark introduces Metric Views.
-Instead of defining metrics everywhere...
-Define them once inside Spark.
+### The Spark 4.2 Solution: Spark introduces Metric Views.
+Instead of defining metrics everywhere, define them once inside Spark.
 Spark now understands business concepts such as:
-	•	Dimensions
-	•	Measures
-	•	Metrics
-	•	Business logic
+- Dimensions
+- Measures
+- Metrics
+- Business logic
 as first-class objects.
-This means Spark no longer only understands tables and columns.
-It also understands business meaning. 
+This means Spark no longer only understands tables and columns. It also understands business meaning. 
 
-Real Example
+Example: 
 Suppose we have this sales table.
 date	region	product	user_id	revenue
 2025-01-01	North	Laptop	101	50000
@@ -60,8 +57,8 @@ date	region	product	user_id	revenue
 Instead of every analyst writing calculations...
 we define one Metric View.
 
-<sql> 
 
+```sql
 CREATE METRIC VIEW mv_business_metrics AS
 
 SELECT
@@ -82,39 +79,40 @@ GROUP BY
     date,
     region,
     product_category;
+```
 
-This becomes the official business definition.
+This becomes the official business definition.Now Everyone Uses the Same Metric
 
-Now Everyone Uses the Same Metric
-BI Dashboard
-
+BI Dashboard:
+```sql
 SELECT
 region,
 arpu
 FROM mv_business_metrics;
+```
 
-
-Finance Team
-
+Finance Team:
+```sql
 SELECT
 revenue,
 active_users
 FROM mv_business_metrics;
+```
 
-
-Data Science
-
+Data Science:
+```sql
 df = spark.table("mv_business_metrics")
 
 df.filter("region='North'")
+```
 
-
-Reporting
-
+Reporting:
+```sql
 SELECT
 date,
 revenue
 FROM mv_business_metrics
+```
 
 Nobody rewrites the metric anymore.
 Everyone queries the same semantic layer.
