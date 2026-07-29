@@ -241,7 +241,103 @@ Alice disappears because of the delete event. Bob becomes Bobby because Spark ke
 - Exactly-Once Guarantees
 - Lower Operational Cost
 
-  
+## 3. Standardized CDC using DSv2 & CHANGES Clause
+
+### Problem before Spark 4.2
+
+Prior to Spark 4.2 and Delta Lake DSv2, implementing Change Data Capture (CDC) on Delta tables required complex custom logic:
+- Consumers had to manually track versions/timestamps to detect changes using Delta's transaction log or file modification times.
+- Change streams often involved custom merges, lookups, or incremental queries on `_change_type` metadata if available.
+- Handling deletes and updates consistently was difficult and error-prone.
+- CDC pipelines were non-standardized and required substantial engineering effort.
+- Streaming reads didn’t have built-in CDC support, leading to inefficient incremental processing.
+
+### What Changed in Spark 4.2 / DSv2?
+
+Spark 4.2 introduced Delta Storage version 2 (DSv2), which includes native CDC support using a standardized **CHANGES** clause in SQL:
+- You can directly query table changes between specific versions or timestamps using `CHANGES BETWEEN` or `CHANGES SINCE`.
+- The change feed includes inserts, updates, and deletes in a consistent manner.
+- Underlying transaction log enhancements provide atomic, reliable CDC streams.
+- Removes the need for custom CDC logic or external bookkeeping.
+- Enables both batch and streaming queries to consume change data easily and efficiently.
+
+### CHANGES Clause Example
+
+```sql
+-- Get all changes since a timestamp
+SELECT * FROM sales CHANGES SINCE '2023-05-01T00:00:00Z';
+
+-- Or get changes between specific versions
+SELECT * FROM sales CHANGES BETWEEN 15 AND 20;
+```
+
+### Benefits
+- Simplifies CDC pipeline development with built-in support
+- Supports efficient incremental ETL and data replication
+- Handles inserts, updates, and deletes explicitly and consistently
+- Enables real-time analytics with minimal latency
+
+---
+
+## 4. Real-Time Mode in PySpark
+
+### Problem before Spark 4.2
+
+- Real-time ingestion and CDC in PySpark were cumbersome without native streaming CDC support.
+- Users had to rely on manual version tracking, checkpointing, or polling approaches to identify changes.
+- Streaming CDC often missed deletes and relied on complex workarounds.
+- Latency and reliability issues made real-time ETL difficult.
+- Ensuring exactly-once semantics during incremental processing was challenging.
+
+### What Changed in Spark 4.2 ?
+
+With the introduction of DSv2 and native CDC streaming, PySpark supports real-time ingestion of changes using the
+readChangeFeed option:
+- PySpark structured streaming can now read CDC changes as a continuous stream.
+- CDC includes inserts, updates, and deletes in a consistent format.
+- Exactly-once fault-tolerant streaming pipelines can be built easily.
+- Latency is reduced to micro-batch intervals.
+- CDC streams can be used to build real-time dashboards, alerting, or ETL jobs with minimal engineering effort.
+
+### Example: Streaming CDC in PySpark
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("RealTimeCDC").getOrCreate()
+
+'' Enable reading change feed from a Delta table with CDC enabled (DSv2)
+changes_df = (
+    spark.readStream
+         .format("delta")
+         .option("readChangeFeed", "true")  # Stream CDC changes
+         .table("sales")
+)
+
+'' Write the streaming changes to console or any sink
+query = (
+    changes_df.writeStream
+              .format("console")
+              .option("truncate", "false")
+              .start()
+)
+
+Query.awaitTermination()
+
+### Benefits
+
+- Continuous, low-latency, and fault-tolerant CDC ingestion
+- Supports updates and deletes, not just inserts
+- Simplifies building real-time ETL pipelines and dashboards
+- Standardized API reduces custom logic and engineering overhead
+
+### Use Cases:
+
+- Incremental ETL pipelines
+- Real-time dashboards and reporting
+- Event-driven data architectures
+
+---
+
 ## 5. AI-Native SQL and Native Spatial Types
 
 ### The Problem Before Spark 4.2
