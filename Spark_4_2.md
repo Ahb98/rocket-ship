@@ -162,7 +162,9 @@ One must also handle:
 A simple MERGE quickly becomes hundreds of lines of logic.
 
 Example CDC Events: 
-Incoming stream:
+
+Incoming stream
+
 | event_ts | op | id | name     |
 |----------|----|---:|----------|
 | 10:01    | I  |  1 | Alice    |
