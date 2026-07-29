@@ -9,10 +9,10 @@ For example:
 Unfortunately, every team calculates them differently.
 
 BI Dashboard
-
+```python
 SUM(revenue) /
 COUNT(DISTINCT user_id)
-
+```
 Finance Report
 
 SUM(revenue_amount) /
