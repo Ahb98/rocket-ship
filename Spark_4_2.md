@@ -123,18 +123,17 @@ Nobody rewrites the metric anymore. Everyone queries the same semantic layer.
 - Lower Maintenance
 
 ## 2. Auto CDC in Declarative Pipelines
-The Problem Before Spark 4.2
-Most enterprise systems continuously receive data changes.
-These are called CDC (Change Data Capture) events.
+### The Problem Before Spark 4.2:
+Most enterprise systems continuously receive data changes. These are called CDC (Change Data Capture) events.
 For example:
-Operation	Meaning
-Insert	New customer
-Update	Customer changed address
-Delete	Customer removed
+- Operation	Meaning
+- Insert	New customer
+- Update	Customer changed address
+- Delete	Customer removed
+  
 Traditionally, engineers manually write complex MERGE statements.
 
-<sql>
-
+```sql
 MERGE INTO customers t
 
 USING customer_events s
@@ -149,19 +148,20 @@ THEN INSERT ...
 
 WHEN MATCHED AND s.op='D'
 THEN DELETE
+```
 
-Looks manageable...
-until real-world challenges appear.
-You must also handle:
-	•	Updates
-	•	Deletes
-	•	Duplicate events
-	•	Late-arriving events
-	•	Out-of-order events
-	•	Exactly-once processing
+This looks manageable until real-world challenges appear.
+One must also handle:
+- Updates
+- Deletes
+- Duplicate events
+- Late-arriving events
+- Out-of-order events
+- Exactly-once processing
+  
 A simple MERGE quickly becomes hundreds of lines of logic.
 
-Example CDC Events
+Example CDC Events: 
 Incoming stream:
 event_ts	op	id	name
 10:01	I	1	Alice
@@ -169,20 +169,17 @@ event_ts	op	id	name
 10:03	D	1	Alice
 10:04	I	2	Bob
 10:05	U	2	Bobby
-Without automation,
-developers must manually determine:
-	•	latest version
-	•	delete handling
-	•	ordering
-	•	duplicate removal
 
-Spark 4.2 Auto CDC
-Instead of describing how to merge records,
-developers simply describe
-what the source is and which columns identify records.
-Spark handles everything else.
+Without automation, developers must manually determine:
+- latest version
+- delete handling
+- ordering
+- duplicate removal
+
+### Spark 4.2 Auto CDC:
+Instead of describing how to merge records, developers simply describe what the source is and which columns identify records. Spark handles everything else.
 Example:
-<python> 
+```python
 
 (
 spark.readStream
@@ -195,48 +192,37 @@ spark.readStream
     .option("pipelines.cdc.operation.column", "op")
     .table("dim_customer")
 )
+```
 
 Spark automatically performs:
-	•	MERGE
-	•	UPDATE
-	•	DELETE
-	•	INSERT
-	•	Deduplication
-	•	Event ordering
-	•	Exactly-once guarantees
+- MERGE
+- UPDATE
+- DELETE
+- INSERT
+- Deduplication
+- Event ordering
+- Exactly-once guarantees
 
-What Happens Internally?
-Incoming Events
+### What Happens Internally?
+Incoming Events:
 
-Insert Alice
-Update Alice
-Delete Alice
-Insert Bob
-Update Bob
+- Insert Alice
+- Update Alice
+- Delete Alice
+- Insert Bob
+- Update Bob
 
-Spark automatically produces
+Spark automatically produces:
 id	name
 2	Bobby
-Alice disappears because of the delete event.
-Bob becomes Bobby because Spark kept only the latest state.
-No custom MERGE logic required.
+
+Alice disappears because of the delete event. Bob becomes Bobby because Spark kept only the latest state. No custom MERGE logic required.
 
 
-Why Auto CDC Matters
-Less Code
-Developers configure CDC instead of implementing it.
-
-Fewer Production Bugs
-Built-in processing reduces mistakes in merge logic.
-
-Handles Out-of-Order Events
-Late-arriving records are processed correctly.
-
-Automatic Deduplication
-Duplicate events no longer create duplicate records.
-
-Exactly-Once Guarantees
-Prevents inconsistent updates caused by retries.
-
-Lower Operational Cost
-Teams spend less time maintaining custom CDC pipelines.
+### Why Auto CDC Matters:
+- Less Code
+- Fewer Production Bugs
+- Handles Out-of-Order Events
+- Automatic Deduplication
+- Exactly-Once Guarantees
+- Lower Operational Cost
