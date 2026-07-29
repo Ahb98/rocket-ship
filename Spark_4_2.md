@@ -205,12 +205,13 @@ Spark automatically performs:
 
 ### What Happens Internally?
 Incoming Events:
-
-- Insert Alice
-- Update Alice
-- Delete Alice
-- Insert Bob
-- Update Bob
+```bash
+Insert Alice
+Update Alice
+Delete Alice
+Insert Bob
+Update Bob
+```
 
 Spark automatically produces:
 id	name
