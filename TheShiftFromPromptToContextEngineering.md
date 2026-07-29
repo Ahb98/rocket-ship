@@ -6,6 +6,11 @@ title: "The Shift from Prompt Engineering to Context Engineering"
 # From Prompt Engineering to Context Engineering: How AI Systems Are Evolving
 Why the next leap in AI is coming not from smarter prompts alone, but from better memory, retrieval, and state-aware orchestration.
 <img src="./images/PvsC_01.png" width="95%" align="center" alt="Prompt Engineering to Context Engineering" />
+<p align="center"><em>AI-generated visual used for illustrative purposes.</em></p>
+
+## Collab     
+1. [Pavan Kumar Busetty](https://github.com/pavankumarbusetty), [LinkedIn](https://www.linkedin.com/in/pavankumar-busetty/)
+2. [Shivani Patil](https://github.com/shivanidp7), [LinkedIn](https://www.linkedin.com/in/shivani-patil-0b0825208?utm_source=share_via&utm_content=profile&utm_medium=member_android)
 
 ## TL;DR
 Prompt engineering made AI impressive by improving how we ask. Context engineering is what will make AI dependable, personalized, and truly agentic, because the future of AI depends not only on better instructions, but on better memory, retrieval, tools, and context-aware orchestration around the model.
@@ -19,6 +24,7 @@ This phase of progress established an important principle: **the way a model is 
 A language model can respond only through the information available to it at the moment of inference. If the most relevant facts are missing, outdated, poorly retrieved, or buried within an overloaded context window, even the most carefully designed prompt will fall short. This realization has led to a broader shift in how AI systems are being built and evaluated. The conversation is no longer centered only on **how to ask better**, but also on **how to ensure the model has the right context when it answers**. That is the foundation of the transition from prompt engineering to context engineering.<br>
 
 <img src="./images/PvsC_002.png" width="95%" align="center" alt="Prompt Engineering to Context Engineering_02" />
+<p align="center"><em>AI-generated visual used for illustrative purposes.</em></p>
 
 ### What Prompt Engineering Solved and Where It Hit a Wall
 
@@ -33,6 +39,7 @@ That is where prompt engineering begins to reach its limit. The problem shifts f
 **Context engineering** is the discipline of designing the full information state around the prompt. It includes **retrieval, memory, conversation history, tool access, permissions, ranking, compression, and timing** in other words, everything that determines what the model sees when it reasons. Put simply, **prompt engineering optimizes the instruction; context engineering optimizes the situation**.
 
 <img src="./images/PvsC_03.png" width="95%" align="center" alt="Prompt Engineering to Context Engineering_03" />
+<p align="center"><em>AI-generated visual used for illustrative purposes.</em></p>
 
 This is why the rise of **RAG, long-context models, memory systems, tool-calling, and agents** all points in the same direction. These may appear to be separate innovations, but they address one shared challenge: models perform best when they receive the **right information, in the right form, at the right moment**. As recent work on long context has shown, simply adding more tokens is not enough. Context quality depends on **selection, placement, and relevance**, not just scale.
 
@@ -49,6 +56,7 @@ Systems become more **operational**. The move toward agents is not simply a chan
 Finally, the source of competitive advantage changes. In the prompt era, differentiation often came from finding the best phrasing or reasoning pattern. In the context era, it comes from building better retrieval pipelines, memory policies, context ranking, tool interfaces, and orchestration logic. The real moat no longer sits inside the prompt alone it extends into the surrounding system that informs and supports the model.
 
 <img src="./images/PvsC_04.png" width="95%" align="center" alt="Prompt Engineering to Context Engineering_04" />
+<p align="center"><em>AI-generated visual used for illustrative purposes.</em></p>
 
 ### Why This Matters
 
@@ -58,7 +66,14 @@ Prompt engineering made AI **impressive** because it showed how much could chang
 
 **The next era of AI will belong not just to better prompts, but to better context systems**.
 
-   
+## AI Use
+
+AI tools were used during the creation of this article to support refinement and presentation quality. The original idea, core argument, article direction, and final editorial choices were developed by the authors.
+
+AI assistance helped improve grammar, clarity, readability, and flow. Suggestions were reviewed and adapted to keep the final content aligned with the intended message and perspective.
+
+Some visuals used in this article were generated with the help of AI tools for illustrative purposes.
+
 ---
 		   
 # [Back to Rocket Ship front page](https://shauryashaurya.github.io/rocket-ship/)   
