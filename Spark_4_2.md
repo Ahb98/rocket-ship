@@ -163,12 +163,13 @@ A simple MERGE quickly becomes hundreds of lines of logic.
 
 Example CDC Events: 
 Incoming stream:
-event_ts	op	id	name
-10:01	I	1	Alice
-10:02	U	1	Alice A.
-10:03	D	1	Alice
-10:04	I	2	Bob
-10:05	U	2	Bobby
+| event_ts | op | id | name     |
+|----------|----|---:|----------|
+| 10:01    | I  |  1 | Alice    |
+| 10:02    | U  |  1 | Alice A. |
+| 10:03    | D  |  1 | Alice    |
+| 10:04    | I  |  2 | Bob      |
+| 10:05    | U  |  2 | Bobby    |
 
 Without automation, developers must manually determine:
 - latest version
