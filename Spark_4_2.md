@@ -6,26 +6,29 @@ For example:
 - Revenue
 - Active Users
 - Average Revenue Per User (ARPU)
+  
 Unfortunately, every team calculates them differently.
 
-BI Dashboard
-```python
+BI Dashboard:
+```sql
 SUM(revenue) /
 COUNT(DISTINCT user_id)
 ```
-Finance Report
-
+Finance Report:
+```sql
 SUM(revenue_amount) /
 COUNT(DISTINCT customer_id)
-
-Data Science Notebook
-
+```
+Data Science Notebook:
+```sql
 df.groupBy(...).agg(...)
-
-Ad-hoc SQL
-
+```
+Ad-hoc SQL:
+```sql
 SELECT
 SUM(total_sales)/COUNT(DISTINCT users)
+```
+
 Although all of these attempt to calculate ARPU, they may produce different answers because:
 	•	Different column names
 	•	Different filters
