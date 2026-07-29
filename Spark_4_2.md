@@ -250,15 +250,16 @@ Change Data Capture (CDC) is a technique used to identify and process only the r
 
 ### Typical changes include:
 
--➕ Insert
--✏️ Update
--❌ Delete
+- ➕ Insert
+- ✏️ Update
+- ❌ Delete
+
 This is especially useful for:
 
--Incremental ETL pipelines
--Data replication
--Real-time analytics
--Data synchronization
+- Incremental ETL pipelines
+- Data replication
+- Real-time analytics
+- Data synchronization
 
 ### Problem Before Spark 4.2
 
@@ -266,11 +267,11 @@ Prior to Spark 4.2, every storage format implemented CDC differently.
 
 Developers often had to:
 
--Track Delta table versions manually.
--Compare timestamps or transaction logs.
--Write custom MERGE logic.
--Handle inserts, updates, and deletes separately.
--Build connector-specific CDC pipelines.
+- Track Delta table versions manually.
+- Compare timestamps or transaction logs.
+- Write custom MERGE logic.
+- Handle inserts, updates, and deletes separately.
+- Build connector-specific CDC pipelines.
 Because every storage system exposed CDC differently, pipelines were difficult to reuse across formats. Spark 4.2 introduces a standardized CDC interface through Data Source V2 to make CDC queries portable across connectors. 
 
 ### What Changed in Spark 4.2?
@@ -322,11 +323,11 @@ CHANGES BETWEEN VERSION 1 AND VERSION 3;
 ```
 Example Output
 
-|id  |	product	| amount	| _change_type	| _commit_version|
-|---:|----------|--------:|---------------|---------------:|
-|1	|Laptop	|1200	|update_|preimage	|2|
-|1	|Laptop	|1300	|update_|postimage|	2|
-|2|	Phone	|700	|delete	|3|
+| id  |	product	| amount	| _change_type	| _commit_version|
+|----|----------|---------|---------------|----------------|
+| 1	| Laptop	| 1200	| update_|preimage	| 2 |
+| 1	| Laptop	| 1300	| update_|postimage |	2 |
+| 2 |	Phone	| 700	| delete	| 3 |
 
 ### Understanding Update Events
 An update produces two records.
