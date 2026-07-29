@@ -54,8 +54,8 @@ date	region	product	user_id	revenue
 2025-01-01	North	Laptop	101	50000
 2025-01-01	North	Mouse	102	1000
 2025-01-01	South	Laptop	103	60000
-Instead of every analyst writing calculations...
-we define one Metric View.
+
+Instead of every analyst writing calculations, we define one Metric View.
 
 
 ```sql
