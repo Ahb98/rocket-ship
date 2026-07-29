@@ -1,6 +1,6 @@
 Spark 4.2
 
-##1. Native Semantic Layer with Metric Views
+##1. Native Semantic Layer with Metric Views:
 The Problem Before Spark 4.2
 Imagine an e-commerce company.
 Every team needs the same business metrics.
