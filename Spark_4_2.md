@@ -325,8 +325,8 @@ Example Output
 
 | id  |	product	| amount	| _change_type	| _commit_version|
 |----|----------|---------|---------------|----------------|
-| 1	| Laptop	| 1200	| update_|preimage	| 2 |
-| 1	| Laptop	| 1300	| update_|postimage |	2 |
+| 1	| Laptop	| 1200	| update_preimage	| 2 |
+| 1	| Laptop	| 1300	| update_postimage |	2 |
 | 2 |	Phone	| 700	| delete	| 3 |
 
 ### Understanding Update Events
@@ -430,14 +430,14 @@ query.awaitTermination()
 ```
 
 ### Example Stream Output
-+---+--------+------+----------------+---------------+
-|id |product |amount|_change_type    |_commit_version|
-+---+--------+------+----------------+---------------+
-|1  |Laptop  |1200  |insert          |1              |
-|1  |Laptop  |1200  |update_preimage |2              |
-|1  |Laptop  |1300  |update_postimage|2              |
-|2  |Phone   |700   |delete          |3              |
-+---+--------+------+----------------+---------------+
+
+| id | product | amount| _change_type    | _commit_version|
+|----|---------|-------|-----------------|----------------|
+| 1  | Laptop  | 1200  | insert          | 1              |
+| 1  | Laptop  | 1200  | update_preimage | 2              |
+| 1  | Laptop  | 1300  | update_postimage | 2              |
+| 2  | Phone   | 700   | delete          | 3              |
+
 
 ### Streaming Architecture
 
