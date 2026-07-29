@@ -240,3 +240,220 @@ Alice disappears because of the delete event. Bob becomes Bobby because Spark ke
 - Automatic Deduplication
 - Exactly-Once Guarantees
 - Lower Operational Cost
+
+  
+## 5. AI-Native SQL and Native Spatial Types
+
+### The Problem Before Spark 4.2
+
+Modern data platforms are increasingly combining analytics with Artificial Intelligence (AI) and geospatial data. Common use cases include:
+
+- Semantic search
+- Recommendation systems
+- Retrieval-Augmented Generation (RAG)
+- Location-based analytics
+
+Before Spark 4.2, these workloads often required integrating Spark with external vector databases or GIS libraries. This increased infrastructure complexity, required additional data movement, and made applications harder to maintain.
+
+### The Spark 4.2 Solution: AI-Native SQL and Native Spatial Types
+
+Spark 4.2 introduces native support for vector search and geospatial data directly in Spark SQL.
+
+### AI-Native SQL
+
+Spark now introduces the **NEAREST BY** clause, allowing developers to perform vector similarity searches directly in SQL.
+
+Suppose we have a table containing product embeddings.
+
+| product_id | embedding |
+|------------|-----------|
+| 101 | [0.15, 0.62, 0.81] |
+| 102 | [0.23, 0.74, 0.44] |
+| 103 | [0.11, 0.60, 0.85] |
+
+Finding products similar to a query vector becomes straightforward.
+
+```sql
+SELECT product_id
+FROM products
+NEAREST BY embedding
+TO ARRAY(0.20, 0.70, 0.50)
+LIMIT 2;
+```
+
+Instead of manually calculating similarity scores for every record, Spark automatically returns the nearest matching vectors.
+
+### Native Spatial Types
+
+Spark 4.2 also introduces first-class **GEOMETRY** and **GEOGRAPHY** data types together with built-in spatial functions.
+
+Creating a geographic point is now simple.
+
+```sql
+SELECT ST_Point(77.5946, 12.9716);
+```
+
+A table can also directly store geographic information.
+
+```sql
+CREATE TABLE cities (
+    city STRING,
+    location GEOGRAPHY
+);
+```
+
+Previously, these capabilities required external geospatial frameworks such as Apache Sedona or PostGIS. Spark now provides native support.
+
+### Why This Matters
+
+- Native vector search inside Spark SQL
+- Easier AI and RAG application development
+- Built-in geospatial data support
+- Reduced dependency on external systems
+- Simpler architecture and maintenance
+
+---
+
+## 6. Python Optimization (Arrow by Default)
+
+### The Problem Before Spark 4.2
+
+PySpark executes distributed processing in the JVM, while Python code runs in separate Python worker processes. Every time data moves between the JVM and Python, Spark must serialize and deserialize the data.
+
+This communication overhead becomes significant for Python-heavy workloads involving Pandas, NumPy, and Python UDFs.
+
+```
+JVM
+ ↓
+Serialize
+ ↓
+Python Worker
+ ↓
+Deserialize
+ ↓
+Execute Python
+ ↓
+Serialize
+ ↓
+JVM
+```
+
+### The Spark 4.2 Solution: Arrow by Default
+
+Spark 4.2 enables Apache Arrow by default for supported Python workloads.
+
+Instead of exchanging individual objects, Spark transfers data as efficient columnar batches using Apache Arrow.
+
+```
+JVM
+ ↓
+Arrow Column Batch
+ ↓
+Python Worker
+ ↓
+Arrow Column Batch
+ ↓
+JVM
+```
+
+The Python code remains exactly the same.
+
+```python
+from pyspark.sql.functions import pandas_udf
+
+@pandas_udf("double")
+def discount(price):
+    return price * 0.9
+
+df.withColumn("discount_price", discount("price"))
+```
+
+Spark automatically uses Arrow whenever possible, significantly reducing serialization overhead and improving execution performance.
+
+### Why This Matters
+
+- Faster execution of Python workloads
+- Reduced JVM-Python communication overhead
+- Better interoperability with Pandas, NumPy, and Arrow-based libraries
+- Improved performance for AI and machine learning pipelines
+- No application code changes required
+
+---
+
+## 7. SQL Quality-of-Life Improvements
+
+### The Problem Before Spark 4.2
+
+Spark SQL has become increasingly powerful, but many common analytical queries still required verbose SQL or nested subqueries.
+
+Examples include:
+
+- Filtering results after window functions
+- Creating fixed time buckets
+- Managing SQL function namespaces
+
+Although these limitations were small individually, they made SQL queries longer and more difficult to maintain.
+
+### The Spark 4.2 Solution
+
+Spark 4.2 introduces several quality-of-life improvements that make SQL cleaner and more expressive.
+
+Some notable additions include:
+
+- QUALIFY clause
+- TIME_BUCKET function
+- SET PATH support
+- SQL cursors
+- New aggregation functions such as MAX_BY() and MIN_BY()
+
+### Example 1: QUALIFY
+
+Before Spark 4.2:
+
+```sql
+SELECT *
+FROM (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY department
+               ORDER BY salary DESC
+           ) AS rn
+    FROM employees
+)
+WHERE rn = 1;
+```
+
+Spark 4.2:
+
+```sql
+SELECT *
+FROM employees
+QUALIFY ROW_NUMBER() OVER (
+    PARTITION BY department
+    ORDER BY salary DESC
+) = 1;
+```
+
+The `QUALIFY` clause removes the need for nested subqueries, making window-function queries cleaner and easier to read.
+
+### Example 2: TIME_BUCKET
+
+Grouping events into hourly windows becomes much simpler.
+
+```sql
+SELECT
+    TIME_BUCKET(INTERVAL 1 HOUR, event_time) AS hour,
+    COUNT(*) AS total_events
+FROM logs
+GROUP BY hour;
+```
+
+Instead of manually truncating timestamps, Spark now provides a built-in function for time-based bucketing.
+
+### Why This Matters
+
+- Cleaner SQL syntax
+- Less boilerplate code
+- Easier analytical queries
+- Better readability and maintainability
+- Improved developer productivity
