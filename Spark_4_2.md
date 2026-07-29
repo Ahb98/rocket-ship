@@ -245,22 +245,6 @@ Alice disappears because of the delete event. Bob becomes Bobby because Spark ke
 
 ## 3. Standardized CDC using DSv2 & CHANGES Clause
 
-### What is Change Data Capture (CDC)?
-Change Data Capture (CDC) is a technique used to identify and process only the rows that have changed in a table instead of scanning the entire dataset.
-
-### Typical changes include:
-
-- ➕ Insert
-- ✏️ Update
-- ❌ Delete
-
-This is especially useful for:
-
-- Incremental ETL pipelines
-- Data replication
-- Real-time analytics
-- Data synchronization
-
 ### Problem Before Spark 4.2
 
 Prior to Spark 4.2, every storage format implemented CDC differently.
@@ -371,11 +355,6 @@ This allows downstream systems to know both the previous and new values.
 ---
 
 ## 4. Real-Time Mode in PySpark
-
-### Overview
-Spark 4.2 extends Data Source V2 streaming capabilities, allowing PySpark Structured Streaming to consume change data continuously from supported connectors.
-
-Instead of periodically scanning an entire table, streaming jobs process only newly committed changes, reducing latency and improving efficiency. Delta Lake 4.2 also adds new V2 streaming options such as startingVersion, startingTimestamp, and skipChangeCommits for catalog-managed tables. 
 
 ### Problem Before Spark 4.2
 Building real-time CDC pipelines required significant engineering effort.
@@ -704,3 +683,7 @@ Instead of manually truncating timestamps, Spark now provides a built-in functio
 - Easier analytical queries
 - Better readability and maintainability
 - Improved developer productivity
+
+## Conclusion
+
+Apache Spark 4.2 is one of the most significant releases in recent years, expanding Spark beyond a distributed processing engine into a platform for real-time analytics, governed data, and AI-driven applications. Features such as Metric Views, Auto CDC, standardized CDC APIs, real-time streaming enhancements, AI-native SQL, native spatial types, Arrow-enabled Python optimizations, and SQL usability improvements reduce complexity while improving performance, consistency, and developer productivity. Together, these capabilities make it easier to build scalable, reliable, and modern data pipelines, positioning Spark as a strong foundation for next-generation analytics and AI workloads.
