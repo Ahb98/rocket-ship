@@ -241,80 +241,183 @@ Alice disappears because of the delete event. Bob becomes Bobby because Spark ke
 - Exactly-Once Guarantees
 - Lower Operational Cost
 
+---
+
 ## 3. Standardized CDC using DSv2 & CHANGES Clause
 
-### Problem before Spark 4.2
+### What is Change Data Capture (CDC)?
+Change Data Capture (CDC) is a technique used to identify and process only the rows that have changed in a table instead of scanning the entire dataset.
 
-Prior to Spark 4.2 and Delta Lake DSv2, implementing Change Data Capture (CDC) on Delta tables required complex custom logic:
-- Consumers had to manually track versions/timestamps to detect changes using Delta's transaction log or file modification times.
-- Change streams often involved custom merges, lookups, or incremental queries on `_change_type` metadata if available.
-- Handling deletes and updates consistently was difficult and error-prone.
-- CDC pipelines were non-standardized and required substantial engineering effort.
-- Streaming reads didn’t have built-in CDC support, leading to inefficient incremental processing.
+### Typical changes include:
 
-### What Changed in Spark 4.2 / DSv2?
+-➕ Insert
+-✏️ Update
+-❌ Delete
+This is especially useful for:
 
-Spark 4.2 introduced Delta Storage version 2 (DSv2), which includes native CDC support using a standardized **CHANGES** clause in SQL:
-- You can directly query table changes between specific versions or timestamps using `CHANGES BETWEEN` or `CHANGES SINCE`.
-- The change feed includes inserts, updates, and deletes in a consistent manner.
-- Underlying transaction log enhancements provide atomic, reliable CDC streams.
-- Removes the need for custom CDC logic or external bookkeeping.
-- Enables both batch and streaming queries to consume change data easily and efficiently.
+-Incremental ETL pipelines
+-Data replication
+-Real-time analytics
+-Data synchronization
 
-### CHANGES Clause Example
+### Problem Before Spark 4.2
 
+Prior to Spark 4.2, every storage format implemented CDC differently.
+
+Developers often had to:
+
+-Track Delta table versions manually.
+-Compare timestamps or transaction logs.
+-Write custom MERGE logic.
+-Handle inserts, updates, and deletes separately.
+-Build connector-specific CDC pipelines.
+Because every storage system exposed CDC differently, pipelines were difficult to reuse across formats. Spark 4.2 introduces a standardized CDC interface through Data Source V2 to make CDC queries portable across connectors. 
+
+### What Changed in Spark 4.2?
+Spark 4.2 introduces a standard CDC interface through Data Source V2 (DSv2).
+
+Instead of relying on connector-specific implementations, Spark provides a unified way to query row-level changes using the CHANGES clause.
+
+The returned change stream contains metadata such as:
+
+| Metadata column  | Description |
+|------------------|-------------|
+|  _change_type    | insert, delete, update_preimage, update_postimage |
+|  _commit_version | Version in which the change occurred |
+|  _commit_timestamp | Timestamp of the transaction |
+
+### Example
 ```sql
--- Get all changes since a timestamp
-SELECT * FROM sales CHANGES SINCE '2023-05-01T00:00:00Z';
-
--- Or get changes between specific versions
-SELECT * FROM sales CHANGES BETWEEN 15 AND 20;
+Create a Delta Table
+CREATE TABLE sales (
+    id INT,
+    product STRING,
+    amount DOUBLE
+)
+USING DELTA;
 ```
 
+Insert data
+```
+INSERT INTO sales VALUES
+(1,'Laptop',1200),
+(2,'Phone',700);
+```
+Update a row
+```
+UPDATE sales
+SET amount = 1300
+WHERE id = 1;
+```
+Delete a row
+```
+DELETE FROM sales
+WHERE id = 2;
+```
+Query Changes
+```sql
+SELECT *
+FROM sales
+CHANGES BETWEEN VERSION 1 AND VERSION 3;
+```
+Example Output
+
+|id  |	product	| amount	| _change_type	| _commit_version|
+|---:|----------|--------:|---------------|---------------:|
+|1	|Laptop	|1200	|update_|preimage	|2|
+|1	|Laptop	|1300	|update_|postimage|	2|
+|2|	Phone	|700	|delete	|3|
+
+### Understanding Update Events
+An update produces two records.
+
+Before Update
+```
+id=1 amount=1200
+```
+After Update
+```
+id=1 amount=1300
+```
+CDC Output
+```
+update_preimage
+id=1 amount=1200
+
+update_postimage
+id=1 amount=1300
+```
+This allows downstream systems to know both the previous and new values.
+
 ### Benefits
-- Simplifies CDC pipeline development with built-in support
-- Supports efficient incremental ETL and data replication
-- Handles inserts, updates, and deletes explicitly and consistently
-- Enables real-time analytics with minimal latency
+
+- Standard CDC syntax across DSv2 connectors
+- Eliminates custom version tracking
+- Consistent handling of inserts, updates, and deletes
+- Efficient incremental processing
+- Simplifies ETL and replication pipelines
+- Better interoperability across storage formats
+
+### Use Cases
+
+- Incremental ETL
+- Data warehouse synchronization
+- Audit logging
+- Database replication
+- Change history tracking
+- Event-driven architectures
 
 ---
 
 ## 4. Real-Time Mode in PySpark
 
-### Problem before Spark 4.2
+### Overview
+Spark 4.2 extends Data Source V2 streaming capabilities, allowing PySpark Structured Streaming to consume change data continuously from supported connectors.
 
-- Real-time ingestion and CDC in PySpark were cumbersome without native streaming CDC support.
-- Users had to rely on manual version tracking, checkpointing, or polling approaches to identify changes.
-- Streaming CDC often missed deletes and relied on complex workarounds.
-- Latency and reliability issues made real-time ETL difficult.
-- Ensuring exactly-once semantics during incremental processing was challenging.
+Instead of periodically scanning an entire table, streaming jobs process only newly committed changes, reducing latency and improving efficiency. Delta Lake 4.2 also adds new V2 streaming options such as startingVersion, startingTimestamp, and skipChangeCommits for catalog-managed tables. 
 
-### What Changed in Spark 4.2 ?
+### Problem Before Spark 4.2
+Building real-time CDC pipelines required significant engineering effort.
 
-With the introduction of DSv2 and native CDC streaming, PySpark supports real-time ingestion of changes using the
-readChangeFeed option:
-- PySpark structured streaming can now read CDC changes as a continuous stream.
-- CDC includes inserts, updates, and deletes in a consistent format.
-- Exactly-once fault-tolerant streaming pipelines can be built easily.
-- Latency is reduced to micro-batch intervals.
-- CDC streams can be used to build real-time dashboards, alerting, or ETL jobs with minimal engineering effort.
+Common challenges included:
 
-### Example: Streaming CDC in PySpark
+- Manual polling
+- Version tracking
+- Timestamp comparisons
+- Custom checkpoint logic
+- Separate handling of deletes
+- Higher latency
+- Complex recovery after failures
 
-```python
+### What Changed?
+
+PySpark Structured Streaming can continuously read CDC events using the Delta Change Data Feed.
+
+Each micro-batch reads only newly committed changes.
+
+The stream contains:
+
+- Inserts
+- Updates
+- Deletes
+Spark checkpoints ensure fault tolerance and exactly-once processing.
+
+### Example
+```sql
 from pyspark.sql import SparkSession
 
-spark = SparkSession.builder.appName("RealTimeCDC").getOrCreate()
+spark = SparkSession.builder \
+    .appName("RealTimeCDC") \
+    .getOrCreate()
 
-'' Enable reading change feed from a Delta table with CDC enabled (DSv2)
 changes_df = (
     spark.readStream
          .format("delta")
-         .option("readChangeFeed", "true")  # Stream CDC changes
+         .option("readChangeFeed", "true")
+         .option("startingVersion", 0)
          .table("sales")
 )
 
-'' Write the streaming changes to console or any sink
 query = (
     changes_df.writeStream
               .format("console")
@@ -322,21 +425,66 @@ query = (
               .start()
 )
 
-Query.awaitTermination()
+query.awaitTermination()
 ```
+
+### Example Stream Output
++---+--------+------+----------------+---------------+
+|id |product |amount|_change_type    |_commit_version|
++---+--------+------+----------------+---------------+
+|1  |Laptop  |1200  |insert          |1              |
+|1  |Laptop  |1200  |update_preimage |2              |
+|1  |Laptop  |1300  |update_postimage|2              |
+|2  |Phone   |700   |delete          |3              |
++---+--------+------+----------------+---------------+
+
+### Streaming Architecture
+
+        Source System
+              │
+              ▼
+        Delta Table
+     (Change Data Feed)
+              │
+              ▼
+    PySpark Structured Streaming
+              │
+              ▼
+      Micro-Batch Processing
+              │
+      ┌───────┼────────┐
+      ▼       ▼        ▼
+ Dashboard   Kafka   Data Warehouse
 
 ### Benefits
 
-- Continuous, low-latency, and fault-tolerant CDC ingestion
-- Supports updates and deletes, not just inserts
-- Simplifies building real-time ETL pipelines and dashboards
-- Standardized API reduces custom logic and engineering overhead
+- Low-latency change processing
+- Exactly-once fault tolerance
+- Supports inserts, updates, and deletes
+- Reduced I/O by reading only changed rows
+- Simple API for real-time pipelines
+- Easily integrates with dashboards and downstream systems
 
-### Use Cases:
+### Real-World Use Cases
 
+- Real-time dashboards
 - Incremental ETL pipelines
-- Real-time dashboards and reporting
-- Event-driven data architectures
+- Fraud detection
+- Live inventory tracking
+- Customer activity monitoring
+- Data synchronization across systems
+- Event-driven applications
+
+### Key Takeaways
+
+|Feature | Before Spark 4.2 | Spark 4.2 |
+|--------|------------------|-----------|
+|CDC Query | Connector-specific | Standardized DSv2 API |
+|Incremental Reads | Manual tracking | Native CHANGES support |
+|Streaming CDC | Complex implementation | Built-in Structured Streaming support | 
+|Delete Handling | Custom logic | Native support |
+|Update Handling | Manual MERGE logic | update_preimage / update_postimage |
+|Pipeline Development | High engineering effort | Simplified and standardized|
 
 ---
 
