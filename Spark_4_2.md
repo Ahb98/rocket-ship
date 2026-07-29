@@ -3,9 +3,9 @@ Spark 4.2
 ## 1. Native Semantic Layer with Metric Views:
 The Problem Before Spark 4.2: Imagine an e-commerce company. Every team needs the same business metrics.
 For example:
-	- Revenue
-	- Active Users
-	- Average Revenue Per User (ARPU)
+- Revenue
+- Active Users
+- Average Revenue Per User (ARPU)
 Unfortunately, every team calculates them differently.
 
 BI Dashboard
