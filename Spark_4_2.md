@@ -1,6 +1,6 @@
 Spark 4.2
 
-## 1. Native Semantic Layer with Metric Views:
+## 1. Native Semantic Layer with Metric Views
 ### The Problem Before Spark 4.2: 
 Imagine an e-commerce company. Every team needs the same business metrics.
 For example:
@@ -81,7 +81,7 @@ GROUP BY
     product_category;
 ```
 
-This becomes the official business definition.Now Everyone Uses the Same Metric
+This becomes the official business definition. Now Everyone Uses the Same Metric
 
 BI Dashboard:
 ```sql
@@ -114,32 +114,15 @@ revenue
 FROM mv_business_metrics
 ```
 
-Nobody rewrites the metric anymore.
-Everyone queries the same semantic layer.
-Why This Matters
-Single Source of Truth
-Everyone uses exactly the same metric definition.
-No more conflicting numbers.
+Nobody rewrites the metric anymore. Everyone queries the same semantic layer.
+### Why This Matters:
+- Single Source of Truth
+- Easier Governance
+- Reusable Business Logic
+- Faster Analytics
+- Lower Maintenance
 
-Easier Governance
-Metric definitions are centrally managed.
-Auditors know exactly how revenue was calculated.
-
-Reusable Business Logic
-Instead of copying SQL into dozens of dashboards,
-the logic lives in one place.
-
-Faster Analytics
-Analysts simply query metrics instead of rebuilding calculations.
-
-Lower Maintenance
-Need to change ARPU?
-Update one Metric View.
-Everything automatically uses the new definition.
-
-
-
-2. Auto CDC in Declarative Pipelines
+## 2. Auto CDC in Declarative Pipelines
 The Problem Before Spark 4.2
 Most enterprise systems continuously receive data changes.
 These are called CDC (Change Data Capture) events.
