@@ -215,8 +215,9 @@ Update Bob
 ```
 
 Spark automatically produces:
-id	name
-2	Bobby
+| id | name  |
+|---:|-------|
+|  2 | Bobby |
 
 Alice disappears because of the delete event. Bob becomes Bobby because Spark kept only the latest state. No custom MERGE logic required.
 
