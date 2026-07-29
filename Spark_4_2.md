@@ -301,6 +301,7 @@ readChangeFeed option:
 
 ### Example: Streaming CDC in PySpark
 
+```python
 from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.appName("RealTimeCDC").getOrCreate()
@@ -322,6 +323,7 @@ query = (
 )
 
 Query.awaitTermination()
+```
 
 ### Benefits
 
