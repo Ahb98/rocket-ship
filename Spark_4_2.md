@@ -55,6 +55,7 @@ Spark now understands business concepts such as:
 - Measures
 - Metrics
 - Business logic
+
 as first-class objects.
 This means Spark no longer only understands tables and columns. It also understands business meaning. 
 
