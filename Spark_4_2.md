@@ -133,6 +133,7 @@ Nobody rewrites the metric anymore. Everyone queries the same semantic layer.
 - Faster Analytics
 - Lower Maintenance
 
+
 ## 2. Auto CDC in Declarative Pipelines
 ### The Problem Before Spark 4.2:
 Most enterprise systems continuously receive data changes. These are called CDC (Change Data Capture) events.
