@@ -476,18 +476,18 @@ query.awaitTermination()
 
 Palantir Foundry
 
-Source Dataset
-      │
-      ▼
-Incremental Transform
-(automatic state tracking)
-      │
-      ▼
-Output Dataset
-      │
-      ▼
-Downstream Pipelines
-
+        Source Dataset
+              │
+              ▼
+        Incremental Transform
+      (automatic state tracking)
+              │
+              ▼
+        Output Dataset
+              │
+              ▼
+      Downstream Pipelines
+ 
 ### Feature Comparison
 
 | Capability |	Spark 4.1 |	Spark 4.2 |	Palantir Foundry Incremental Transform |
