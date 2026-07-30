@@ -382,6 +382,163 @@ The stream contains:
 - Deletes
 Spark checkpoints ensure fault tolerance and exactly-once processing.
 
+Log in
+Sign up for free
+You said:
+
+4. Real-Time Mode in PySpark
+Problem Before Spark 4.2
+Building real-time CDC pipelines required significant engineering effort.
+
+Common challenges included:
+
+Manual polling
+Version tracking
+Timestamp comparisons
+Custom checkpoint logic
+Separate handling of deletes
+Higher latency
+Complex recovery after failures
+What Changed?
+PySpark Structured Streaming can continuously read CDC events using the Delta Change Data Feed.
+
+Each micro-batch reads only newly committed changes.
+
+The stream contains:
+
+Inserts
+Updates
+Deletes Spark checkpoints ensure fault tolerance and exactly-once processing.
+Example
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("RealTimeCDC") \
+    .getOrCreate()
+
+changes_df = (
+    spark.readStream
+         .format("delta")
+         .option("readChangeFeed", "true")
+         .option("startingVersion", 0)
+         .table("sales")
+)
+
+query = (
+    changes_df.writeStream
+              .format("console")
+              .option("truncate", "false")
+              .start()
+)
+
+query.awaitTermination()
+Example Stream Output
+id	product	amount	_change_type	_commit_version
+1	Laptop	1200	insert	1
+1	Laptop	1200	update_preimage	2
+1	Laptop	1300	update_postimage	2
+2	Phone	700	delete	3
+Streaming Architecture
+    Source System
+          │
+          ▼
+    Delta Table
+ (Change Data Feed)
+          │
+          ▼
+PySpark Structured Streaming
+          │
+          ▼
+  Micro-Batch Processing
+          │
+  ┌───────┼────────┐
+  ▼       ▼        ▼
+Dashboard Kafka Data Warehouse
+
+Benefits
+Low-latency change processing
+Exactly-once fault tolerance
+Supports inserts, updates, and deletes
+Reduced I/O by reading only changed rows
+Simple API for real-time pipelines
+Easily integrates with dashboards and downstream systems
+Real-World Use Cases
+Real-time dashboards
+Incremental ETL pipelines
+Fraud detection
+Live inventory tracking
+Customer activity monitoring
+Data synchronization across systems
+Event-driven applications
+Key Takeaways
+Feature	Before Spark 4.2	Spark 4.2
+CDC Query	Connector-specific	Standardized DSv2 API
+Incremental Reads	Manual tracking	Native CHANGES support
+Streaming CDC	Complex implementation	Built-in Structured Streaming support
+Delete Handling	Custom logic	Native support
+Update Handling	Manual MERGE logic	update_preimage / update_postimage
+Pipeline Development	High engineering effort	Simplified and standardized
+
+need to compare it to transform and incremental transform capabilities in the palantir foundry pipelines as it is in spark 4.1 also
+
+ChatGPT said:
+If you're comparing PySpark Spark 4.2 CDC improvements with Palantir Foundry Transform and Incremental Transform, the key point is that Foundry has provided similar capabilities for years, while Spark is standardizing them as native open-source functionality.
+
+Here's a comparison you can use.
+
+Spark 4.2 vs Palantir Foundry Incremental Pipelines
+Before Spark 4.2
+Open-source Spark supported Structured Streaming and Delta Change Data Feed, but building reliable incremental pipelines still required considerable engineering.
+
+Typical challenges included:
+
+Manual version tracking
+Managing checkpoints
+Writing MERGE logic
+Handling deletes separately
+Maintaining incremental state
+Pipeline orchestration
+Recovery after failures
+Although Spark 4.1 introduced the DataSource V2 (DSv2) CHANGES API, developers still had to assemble much of the pipeline themselves.
+
+### What Palantir Foundry Already Provides
+
+Foundry's Incremental Transform framework abstracts most of this complexity.
+
+Instead of tracking versions manually, Foundry automatically manages:
+
+- Dataset versions
+- Incremental state
+- Checkpointing
+- Dependency tracking
+- Fault recovery
+- Lineage
+- Pipeline orchestration
+A developer only writes transformation logic while the platform determines which data needs processing.
+
+### Example (Foundry)
+
+```sql
+@incremental()
+@transform(
+    output=Output("/sales_curated"),
+    sales=Input("/sales_raw")
+)
+def compute(ctx, sales, output):
+    df = sales.dataframe()
+
+    # only new or changed records are processed
+    result = transform_logic(df)
+
+    output.write_dataframe(result)
+```
+No explicit:
+- startingVersion
+- checkpoint directory
+- offset management
+- version comparisons
+are required.
+
 ### Example
 ```sql
 from pyspark.sql import SparkSession
@@ -436,6 +593,66 @@ query.awaitTermination()
       ▼       ▼        ▼
  Dashboard   Kafka   Data Warehouse
 
+Palantir Foundry
+
+Source Dataset
+      │
+      ▼
+Incremental Transform
+(automatic state tracking)
+      │
+      ▼
+Output Dataset
+      │
+      ▼
+Downstream Pipelines
+
+### Feature Comparison
+
+| Capability |	Spark 4.1 |	Spark 4.2 |	Palantir Foundry Incremental Transform |
+|------------|------------|-----------|----------------------------------------|
+| Incremental Reads |	DSv2 CHANGES API (batch-oriented) |	Native streaming over Delta CDF |	Automatic |
+| Change Tracking |	Manual configuration |	Automatic from Delta CDF |	Fully managed |
+| State Management |	Developer-managed |	Checkpoint-based |	Platform-managed |
+| Checkpointing |	Manual |	Automatic Structured Streaming |	Automatic |
+| Fault Recovery |	Checkpoints |	Exactly-once recovery |	Automatic reruns and lineage |
+| Delete Handling |	Supported with CDF |	Native |	Native |
+| Update Handling |	Pre/Post image |	Pre/Post image |	Automatic incremental updates |
+| Pipeline Orchestration |	External tools |	External tools |	Built into Foundry |
+| Data Lineage |	External tooling |	External tooling |	Native |
+| Dependency Tracking |	Manual |	Manual |	Automatic |
+| Development Effort |	Medium to High |	Lower |	Lowest |
+
+### Key Differences
+
+Spark 4.2
+
+Focuses on standardizing CDC processing within open-source Spark.
+Developers still manage:
+
+- job scheduling
+- orchestration
+- monitoring
+- pipeline dependencies
+- dataset lifecycle
+- infrastructure
+It significantly reduces the effort required to build real-time CDC pipelines compared with earlier Spark versions.
+
+Palantir Foundry
+
+Focuses on end-to-end data pipeline management, not just CDC.
+Beyond incremental processing, it provides:
+
+- automatic pipeline orchestration
+- dataset versioning
+- lineage
+- dependency graph management
+- scheduling
+- governance
+- monitoring
+- automatic recomputation of downstream datasets when upstream data changes
+Incremental processing is integrated into the platform rather than implemented at the application level.
+
 ### Benefits
 
 - Low-latency change processing
@@ -457,14 +674,15 @@ query.awaitTermination()
 
 ### Key Takeaways
 
-|Feature | Before Spark 4.2 | Spark 4.2 |
-|--------|------------------|-----------|
-|CDC Query | Connector-specific | Standardized DSv2 API |
-|Incremental Reads | Manual tracking | Native CHANGES support |
-|Streaming CDC | Complex implementation | Built-in Structured Streaming support | 
-|Delete Handling | Custom logic | Native support |
-|Update Handling | Manual MERGE logic | update_preimage / update_postimage |
-|Pipeline Development | High engineering effort | Simplified and standardized|
+| Aspect |	Spark 4.2 |	Palantir Foundry |
+|--------|------------|------------------|
+| Primary Goal |	Native open-source CDC streaming |	Managed incremental data platform |
+| Incremental Processing |	Delta Change Data Feed + Structured Streaming |	Incremental Transform framework |
+| State Management |	Structured Streaming checkpoints |	Fully managed by the platform |
+| Pipeline Orchestration |	External orchestration required |	Built in |
+| Data Lineage |	Separate tooling |	Built in |
+| Infrastructure |	User-managed |	Platform-managed |
+| Engineering Effort |	Lower than Spark 4.1 |	Lowest due to platform abstractions |
 
 ---
 
