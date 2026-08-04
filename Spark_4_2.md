@@ -5,10 +5,18 @@
 2. [Pavithra Ananthakrishnan](https://github.com/Pavi-245), [LinkedIn](https://www.linkedin.com/in/pavithra-ananthakrishnan-552416244/)          
 3. [Sree Bhavya Kanduri](https://github.com/sreebhavya10), [LinkedIn](https://www.linkedin.com/in/kanduri-sree-bhavya-4001a6246)
 
-## TLD;DR
+## TL;DR
 Apache Spark has long been the go to engine for large scale data processing, analytics, and machine learning. With the release of Apache Spark 4.2, it takes a significant step toward becoming an AI-ready, real time analytics platform rather than just a distributed processing engine. The release introduces capabilities such as a native semantic layer for governed business metrics, automatic Change Data Capture (CDC) in Declarative Pipelines, real-time PySpark streaming, vector search and AI-native SQL functions, and several developer productivity improvements.
 
 In this article, we'll explore the most impactful features introduced in Spark 4.2, understand the problems they solve, and walk through practical examples to see how they can simplify modern data engineering workloads. Whether you're building data warehouses, streaming pipelines, or AI applications, Spark 4.2 brings capabilities that make data processing faster, more consistent, and easier to manage.
+
+1. [Native Semantic Layer with Metric Views](#1-native-semantic-layer-with-metric-views)
+2. [Auto CDC in Declarative Pipelines](#2-auto-cdc-in-declarative-pipelines)
+3. [Standardized CDC using DSv2 & CHANGES Clause](#3-standardized-cdc-using-dsv2--changes-clause)
+4. [Real-Time Mode in PySpark](#4-real-time-mode-in-pyspark)
+5. [AI-Native SQL and Native Spatial Types](#5-ai-native-sql-and-native-spatial-types)
+6. [Python Optimization (Arrow by Default)](#6-python-optimization-arrow-by-default)
+7. [SQL Quality-of-Life Improvements](#7-sql-quality-of-life-improvements)
 
 ## 1. Native Semantic Layer with Metric Views
 ### The Problem Before Spark 4.2: 
@@ -569,24 +577,9 @@ Incremental processing is integrated into the platform rather than implemented a
 
 ## 5. AI-Native SQL and Native Spatial Types
 
-### The Problem Before Spark 4.2
-
-Modern data platforms are increasingly combining analytics with Artificial Intelligence (AI) and geospatial data. Common use cases include:
-
-- Semantic search
-- Recommendation systems
-- Retrieval-Augmented Generation (RAG)
-- Location-based analytics
-
-Before Spark 4.2, these workloads often required integrating Spark with external vector databases or GIS libraries. This increased infrastructure complexity, required additional data movement, and made applications harder to maintain.
-
-### The Spark 4.2 Solution: AI-Native SQL and Native Spatial Types
-
-Spark 4.2 introduces native support for vector search and geospatial data directly in Spark SQL.
-
 ### AI-Native SQL
 
-Spark now introduces the **NEAREST BY** clause, allowing developers to perform vector similarity searches directly in SQL.
+One of the biggest additions in Spark 4.2 is **AI-native SQL**, which brings vector search directly into Spark SQL using the new **NEAREST BY** clause. This makes it much easier to build AI-powered applications such as semantic search, recommendation systems, and Retrieval-Augmented Generation (RAG) pipelines without relying on external vector databases for basic similarity search.
 
 Suppose we have a table containing product embeddings.
 
@@ -596,7 +589,7 @@ Suppose we have a table containing product embeddings.
 | 102 | [0.23, 0.74, 0.44] |
 | 103 | [0.11, 0.60, 0.85] |
 
-Finding products similar to a query vector becomes straightforward.
+Finding products similar to a query vector is now straightforward.
 
 ```sql
 SELECT product_id
@@ -606,19 +599,30 @@ TO ARRAY(0.20, 0.70, 0.50)
 LIMIT 2;
 ```
 
-Instead of manually calculating similarity scores for every record, Spark automatically returns the nearest matching vectors.
+Instead of calculating similarity scores manually across every row, Spark automatically returns the nearest matching vectors based on the embedding column.
+
+### Current Limitations
+
+Although this is a significant step toward AI-native analytics, Spark's vector search is still focused on analytics workloads rather than serving as a complete vector database.
+
+Some current limitations include:
+
+- Primarily designed for SQL analytics rather than low-latency online retrieval.
+- Does not replace dedicated vector databases for production-scale semantic search applications.
+- Advanced vector indexing techniques and specialized retrieval optimizations available in systems like **Milvus**, **Pinecone**, or **Weaviate** are outside the scope of Spark's native implementation.
+- Best suited when embeddings already reside in your Spark tables and similarity search is part of an existing data pipeline.
 
 ### Native Spatial Types
 
-Spark 4.2 also introduces first-class **GEOMETRY** and **GEOGRAPHY** data types together with built-in spatial functions.
+Spark 4.2 also introduces first-class **GEOMETRY** and **GEOGRAPHY** data types, allowing geospatial data to be stored and queried directly in Spark SQL.
 
-Creating a geographic point is now simple.
+Creating a geographic point is simple.
 
 ```sql
 SELECT ST_Point(77.5946, 12.9716);
 ```
 
-A table can also directly store geographic information.
+A table can also store geographic information natively.
 
 ```sql
 CREATE TABLE cities (
@@ -627,15 +631,22 @@ CREATE TABLE cities (
 );
 ```
 
-Previously, these capabilities required external geospatial frameworks such as Apache Sedona or PostGIS. Spark now provides native support.
+Before Spark 4.2, these capabilities typically required external geospatial libraries such as Apache Sedona or PostGIS. Native spatial types simplify geospatial analytics by bringing these capabilities directly into Spark.
 
 ### Why This Matters
 
-- Native vector search inside Spark SQL
-- Easier AI and RAG application development
-- Built-in geospatial data support
-- Reduced dependency on external systems
-- Simpler architecture and maintenance
+Before Spark 4.2, AI vector search and geospatial analytics often required integrating Spark with external vector databases or GIS frameworks. This increased infrastructure complexity, introduced additional data movement, and made pipelines harder to maintain.
+
+With Spark 4.2, many of these capabilities are now available directly in Spark SQL, enabling developers to build modern AI and location-aware analytics using a single platform.
+
+### Key Benefits
+
+- Native vector similarity search using **NEAREST BY**
+- Easier development of AI, semantic search, and RAG applications
+- Built-in **GEOMETRY** and **GEOGRAPHY** data types
+- Reduced reliance on external geospatial frameworks
+- Simpler data architecture with less data movement
+- Better integration of AI and analytics within Spark SQL
 
 ---
 
