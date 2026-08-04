@@ -5,18 +5,18 @@
 2. [Pavithra Ananthakrishnan](https://github.com/Pavi-245), [LinkedIn](https://www.linkedin.com/in/pavithra-ananthakrishnan-552416244/)          
 3. [Sree Bhavya Kanduri](https://github.com/sreebhavya10), [LinkedIn](https://www.linkedin.com/in/kanduri-sree-bhavya-4001a6246)
 
-## TLD;DR
+## TL;DR
 Apache Spark has long been the go to engine for large scale data processing, analytics, and machine learning. With the release of Apache Spark 4.2, it takes a significant step toward becoming an AI-ready, real time analytics platform rather than just a distributed processing engine. The release introduces capabilities such as a native semantic layer for governed business metrics, automatic Change Data Capture (CDC) in Declarative Pipelines, real-time PySpark streaming, vector search and AI-native SQL functions, and several developer productivity improvements.
 
 In this article, we'll explore the most impactful features introduced in Spark 4.2, understand the problems they solve, and walk through practical examples to see how they can simplify modern data engineering workloads. Whether you're building data warehouses, streaming pipelines, or AI applications, Spark 4.2 brings capabilities that make data processing faster, more consistent, and easier to manage.
 
-- [Native Semantic Layer with Metric Views](#1-native-semantic-layer-with-metric-views)
-- [Auto CDC in Declarative Pipelines](#2-auto-cdc-in-declarative-pipelines)
-- [Standardized CDC using DSv2 & CHANGES Clause](#3-standardized-cdc-using-dsv2--changes-clause)
-- [Real-Time Mode in PySpark](#4-real-time-mode-in-pyspark)
-- [AI-Native SQL and Native Spatial Types](#5-ai-native-sql-and-native-spatial-types)
-- [Python Optimization (Arrow by Default)](#6-python-optimization-arrow-by-default)
-- [SQL Quality-of-Life Improvements](#7-sql-quality-of-life-improvements)
+1. [Native Semantic Layer with Metric Views](#1-native-semantic-layer-with-metric-views)
+2. [Auto CDC in Declarative Pipelines](#2-auto-cdc-in-declarative-pipelines)
+3. [Standardized CDC using DSv2 & CHANGES Clause](#3-standardized-cdc-using-dsv2--changes-clause)
+4. [Real-Time Mode in PySpark](#4-real-time-mode-in-pyspark)
+5. [AI-Native SQL and Native Spatial Types](#5-ai-native-sql-and-native-spatial-types)
+6. [Python Optimization (Arrow by Default)](#6-python-optimization-arrow-by-default)
+7. [SQL Quality-of-Life Improvements](#7-sql-quality-of-life-improvements)
 
 ## 1. Native Semantic Layer with Metric Views
 ### The Problem Before Spark 4.2: 
