@@ -432,6 +432,35 @@ Alice no longer exists because the delete event was processed.
 Bob becomes Bobby because Spark retained only the latest version of the record.
 No custom MERGE logic is required.
 
+### Comparison with Palantir Foundry
+
+If you've worked with Palantir Foundry, this feature may feel familiar.
+
+Foundry already supports incremental processing through the `@transform` and `@incremental` decorators.
+
+A typical incremental pipeline might look like this:
+
+```python
+@incremental()
+@transform(...)
+def compute(ctx, input_df, output):
+    ...
+```
+
+With `@incremental`, Foundry tracks previously processed data and only processes new records during subsequent pipeline runs. This significantly reduces processing time and simplifies incremental ETL development. However, developers are still responsible for implementing much of the CDC business logic themselves, such as:
+
+- MERGE logic
+- Delete handling
+- Deduplication
+- Record ordering
+- Applying SCD Type 1 or Type 2 rules
+
+Spark 4.2 Auto CDC moves one step further.
+
+Instead of requiring developers to implement these behaviors inside transformation code, Spark understands CDC as a native pipeline operation.
+
+Once the primary key, sequence column, and operation column are provided, Spark automatically manages record lifecycle, event ordering, deduplication, and merge execution.
+
 
 ## 3. Standardized CDC using DSv2 & CHANGES Clause
 
