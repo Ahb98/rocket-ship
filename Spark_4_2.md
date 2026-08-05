@@ -366,7 +366,7 @@ Without any automation, developers must determine:
 - Whether a delete should remove the record
 - How duplicate events should be handled
 - How to process events arriving out of order
-- How to guarantee exactly-once processing
+- How to guarantee exactly once processing
 
 Much of this logic has traditionally been implemented manually.
 
