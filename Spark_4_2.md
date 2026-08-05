@@ -461,6 +461,22 @@ Instead of requiring developers to implement these behaviors inside transformati
 
 Once the primary key, sequence column, and operation column are provided, Spark automatically manages record lifecycle, event ordering, deduplication, and merge execution.
 
+### Why Auto CDC Matters
+
+Auto CDC allows developers to focus on business logic instead of merge logic.
+
+Benefits include:
+
+- Less code
+- Fewer production bugs
+- Automatic deduplication
+- Built-in handling of out-of-order events
+- Exactly-once guarantees
+- Easier pipeline maintenance
+- Lower operational cost
+
+As data volumes continue to grow, reducing custom CDC code improves both developer productivity and long-term pipeline reliability.
+
 
 ## 3. Standardized CDC using DSv2 & CHANGES Clause
 
