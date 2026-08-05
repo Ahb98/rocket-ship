@@ -99,7 +99,7 @@ Unlike traditional SQL views, Metric Views allow Spark to understand business co
 - Metrics
 - Business Logic
 
-Spark no longer understands only tables and columns—it also understands the business meaning behind your data. 
+Spark no longer understands only tables and columns, it also understands the business meaning behind your data. 
 
 #### Example 1: 
 Suppose we have this sales table.
