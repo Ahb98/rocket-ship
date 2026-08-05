@@ -301,7 +301,7 @@ For organizations operating at scale, where even small inconsistencies can lead 
 
 ## 2. Auto CDC in Declarative Pipelines
 ### The Problem Before Spark 4.2:
-ost enterprise applications continuously generate data changes rather than replacing entire datasets. These changes are known as **Change Data Capture (CDC)** events.
+Most enterprise applications continuously generate data changes rather than replacing entire datasets. These changes are known as **Change Data Capture (CDC)** events.
 
 Typical CDC operations include:
 
