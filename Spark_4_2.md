@@ -249,7 +249,6 @@ Alice disappears because of the delete event. Bob becomes Bobby because Spark ke
 - Exactly-Once Guarantees
 - Lower Operational Cost
 
----
 
 ## 3. Standardized CDC using DSv2 & CHANGES Clause
 
