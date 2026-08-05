@@ -171,11 +171,7 @@ Nobody rewrites the metric anymore. Everyone queries the same semantic layer.
 
 #### Example 2: Reinsurance Claims Analytics
 
-Metric Views become even more valuable in industries where business logic is significantly more complex.
-
-Consider a global reinsurance company.
-
-Different departments analyze the same claims data.
+Metric Views become even more valuable in industries where business logic is significantly more complex. Consider a global reinsurance company. Different departments analyze the same claims data.
 
 - Finance tracks total claim payouts.
 - Risk teams monitor Loss Ratios.
