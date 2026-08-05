@@ -56,18 +56,52 @@ Although all of these attempt to calculate ARPU, they may produce different answ
   
 Eventually people stop trusting the data. Instead of discussing business decisions,they spend hours discussing whose number is correct.
 
+### Traditional Database Views Don't Solve This
+
+If you've worked with Oracle, SQL Server, Redshift, Snowflake, or PostgreSQL, you might wonder:
+
+> "Can't we simply create a SQL View?"
+
+A traditional database view certainly helps reduce repeated SQL, but it doesn't solve the consistency problem.
+
+For example, we could create a view like this:
+
+```sql
+CREATE VIEW sales_summary AS
+SELECT
+    region,
+    SUM(revenue) AS revenue
+FROM fact_sales
+GROUP BY region;
+```
+This is simply a saved SQL query.
+
+The database understands:
+
+- Tables
+- Columns
+- Joins
+- Aggregations
+
+It **does not understand that `SUM(revenue)` represents the company's official definition of Revenue.**
+
+If Finance later decides refunds should be excluded, or Marketing changes the definition of Active Users, every downstream report, dashboard, notebook, and application must be updated manually. The business logic is still scattered across the organisation.
+
+
 ### The Spark 4.2 Solution: Spark introduces Metric Views.
-Instead of defining metrics everywhere, define them once inside Spark.
-Spark now understands business concepts such as:
+Spark 4.2 introduces **Metric Views**, bringing a native semantic layer directly into Spark.
+Instead of repeatedly defining business metrics in dashboards, notebooks, or SQL scripts, organizations can define them once inside Spark.
+
+Unlike traditional SQL views, Metric Views allow Spark to understand business concepts as first-class objects, including:
+
 - Dimensions
 - Measures
 - Metrics
-- Business logic
+- Business Logic
 
-as first-class objects.
-This means Spark no longer only understands tables and columns. It also understands business meaning. 
+Spark no longer understands only tables and columns—it also understands the business meaning behind your data. 
 
-Example: 
+#### Example 1: 
 Suppose we have this sales table.
 | date       | region | product | user_id | revenue |
 |------------|--------|---------|--------:|--------:|
@@ -134,13 +168,139 @@ FROM mv_business_metrics
 ```
 
 Nobody rewrites the metric anymore. Everyone queries the same semantic layer.
-### Why This Matters:
-- Single Source of Truth
-- Easier Governance
-- Reusable Business Logic
-- Faster Analytics
-- Lower Maintenance
-  
+
+#### Example 2: Reinsurance Claims Analytics
+
+Metric Views become even more valuable in industries where business logic is significantly more complex.
+
+Consider a global reinsurance company.
+
+Different departments analyze the same claims data.
+
+- Finance tracks total claim payouts.
+- Risk teams monitor Loss Ratios.
+- Actuaries calculate Average Claim Severity.
+- Executives consume KPIs through dashboards.
+
+Suppose the raw claims table looks like this:
+
+| Claim Date | Treaty | Region | Claim ID | Premium | Claim Amount |
+|------------|---------|---------|----------|---------:|-------------:|
+|2025-01-01|Property XL|APAC|C101|500000|200000|
+|2025-01-01|Property XL|APAC|C102|300000|100000|
+|2025-01-01|Casualty QS|Europe|C103|450000|350000|
+
+Without Metric Views, every team independently calculates these metrics.
+
+**Finance**
+```sql
+SELECT
+    SUM(claim_amount) AS total_claims
+FROM claims;
+```
+
+**Risk Team**
+
+```sql
+SELECT
+    SUM(claim_amount) /
+    SUM(premium) AS loss_ratio
+FROM claims;
+```
+
+**Actuarial Team**
+
+```sql
+SELECT
+    AVG(claim_amount) AS average_claim_size
+FROM claims;
+```
+
+Initially, these calculations may seem consistent.
+
+However, over time, each team begins applying different business rules:
+
+- Excluding reopened claims
+- Including only settled claims
+- Applying currency conversions
+- Ignoring claims below certain thresholds
+- Filtering by treaty type
+
+Before long, two dashboards displaying the same KPI report different values.
+
+Teams lose confidence in the data and spend more time validating reports than making business decisions.
+
+Using Spark 4.2, these KPIs can be defined once.
+
+```sql
+CREATE METRIC VIEW mv_claim_metrics AS
+
+SELECT
+    treaty,
+    region,
+
+    SUM(claim_amount) AS total_claims,
+
+    SUM(premium) AS total_premium,
+
+    SUM(claim_amount) /
+    SUM(premium) AS loss_ratio,
+
+    AVG(claim_amount) AS average_claim_size
+
+FROM claims
+
+GROUP BY
+    treaty,
+    region;
+```
+
+Now every consumer queries the same governed metrics.
+
+**Finance**
+
+```sql
+SELECT region, total_claims
+FROM mv_claim_metrics;
+```
+
+**Risk Team**
+
+```sql
+SELECT treaty, loss_ratio
+FROM mv_claim_metrics;
+```
+
+**Executive Dashboard**
+
+```sql
+SELECT
+    region,
+    loss_ratio,
+    average_claim_size
+FROM mv_claim_metrics;
+```
+
+Whether the metrics are consumed through dashboards, notebooks, scheduled reports, or AI applications, everyone relies on exactly the same business definitions.
+
+### Why This Matters
+
+Metric Views fundamentally change how organizations manage business metrics.
+
+Instead of maintaining KPI definitions across dozens of dashboards, notebooks, SQL scripts, and applications, teams can define them once and reuse them everywhere.
+
+The result is:
+
+- A single source of truth
+- Consistent business metrics
+- Easier governance
+- Reusable business logic
+- Lower maintenance
+- Greater trust in analytics
+
+For organizations operating at scale, where even small inconsistencies can lead to costly business decisions, Metric Views provide a foundation for reliable, governed, and reusable analytics.
+
+
 ---
 
 ## 2. Auto CDC in Declarative Pipelines
