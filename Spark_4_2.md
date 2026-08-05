@@ -296,7 +296,6 @@ The result is:
 
 For organizations operating at scale, where even small inconsistencies can lead to costly business decisions, Metric Views provide a foundation for reliable, governed, and reusable analytics.
 
-
 ---
 
 ## 2. Auto CDC in Declarative Pipelines
@@ -477,6 +476,7 @@ Benefits include:
 
 As data volumes continue to grow, reducing custom CDC code improves both developer productivity and long-term pipeline reliability.
 
+---
 
 ## 3. Standardized CDC using DSv2 & CHANGES Clause
 
