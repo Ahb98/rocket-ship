@@ -140,7 +140,8 @@ Nobody rewrites the metric anymore. Everyone queries the same semantic layer.
 - Reusable Business Logic
 - Faster Analytics
 - Lower Maintenance
-
+  
+---
 
 ## 2. Auto CDC in Declarative Pipelines
 ### The Problem Before Spark 4.2:
