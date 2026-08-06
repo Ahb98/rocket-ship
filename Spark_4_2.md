@@ -103,6 +103,7 @@ Spark no longer understands only tables and columns, it also understands the bus
 
 #### Example 1: 
 Suppose we have this sales table.
+
 | date       | region | product | user_id | revenue |
 |------------|--------|---------|--------:|--------:|
 | 2025-01-01 | North  | Laptop  |     101 |   50000 |
