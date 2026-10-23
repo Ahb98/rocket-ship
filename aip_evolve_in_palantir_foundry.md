@@ -83,37 +83,8 @@ However, passing an evaluation is not proof of production correctness. Test cove
 
 AIP Evolve operates within the wider Foundry environment. The following diagram groups capabilities by responsibility rather than representing an exact deployment topology.
 
-### Conceptual architecture
+<img width="2034" height="1634" alt="Screenshot_2026-10-24-01-14-44-18_96b26121e545231a3c569311a54cda96" src="https://github.com/user-attachments/assets/6a3809e7-3679-4dc3-a209-02a4cfc2789a" />
 
-```mermaid
-flowchart TB
-    subgraph APP["Business and application layer"]
-        W["Workshop and operational applications"]
-        A["AI-powered functions and workflows"]
-    end
-
-    subgraph DATA["Enterprise context"]
-        O["Ontology"]
-        D["Datasets and data pipelines"]
-    end
-
-    subgraph OPT["AI improvement workflow"]
-        E["AIP Evolve"]
-        F["AI FDE agents"]
-        V["Validation and evaluation"]
-        P["Proposal and review"]
-        E --> F
-        F --> V
-        V --> P
-    end
-
-    W --> A
-    D --> O
-    A -. "Target AI resource" .-> E
-    O -. "Enterprise context, where relevant" .-> A
-    P --> G["Global Branching review and merge"]
-    G -. "Approved changes" .-> A
-```
 
 ### Responsibilities of the main components
 
@@ -209,5 +180,3 @@ The results still depend on sound evaluation design, representative test cases, 
 3. [Palantir — AIP Evals overview](https://www.palantir.com/docs/foundry/aip-evals/overview)
 
 ---
-
- and measurable outcomes. For technical practitioners, emphasize orchestration, evaluation design, constraints, baseline comparisons, and change management.
