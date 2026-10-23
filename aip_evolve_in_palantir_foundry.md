@@ -1,7 +1,7 @@
 # AIP Evolve in Palantir Foundry
 *Advancing Enterprise AI Through Agent-Driven Optimization*
 
-## 1. Executive Overview: What Is AIP Evolve?
+## 1. What Is AIP Evolve?
 
 Enterprise AI development does not end when an application goes live. Over time, organizations need to reduce operating costs, improve response times, maintain output quality, and adapt to changing models and business requirements.
 
@@ -64,7 +64,6 @@ flowchart TD
     I --> K["Measure results after adoption"]
 ```
 
-*Conceptual workflow based on Palantir's documented process. Actual steps depend on the target resource and configuration.*
 
 ### Key steps
 
@@ -115,8 +114,6 @@ flowchart TB
     P --> G["Global Branching review and merge"]
     G -. "Approved changes" .-> A
 ```
-
-*Conceptual integration diagram. The exact connections depend on the selected resource and implementation.*
 
 ### Responsibilities of the main components
 
@@ -213,17 +210,4 @@ The results still depend on sound evaluation design, representative test cases, 
 
 ---
 
-## Suggested presentation storyline
-
-For an accompanying executive and technical presentation, use eight slides:
-
-1. What happens after an AI solution goes live?
-2. The business and engineering problem.
-3. What AIP Evolve does—and does not do.
-4. The optimization lifecycle.
-5. Integration with Foundry.
-6. Comparison with other Foundry capabilities.
-7. Inventory-allocation example and measurable KPIs.
-8. Strategic implications and conclusion.
-
-For executives, emphasize business impact, operating cost, risk, and measurable outcomes. For technical practitioners, emphasize orchestration, evaluation design, constraints, baseline comparisons, and change management.
+ and measurable outcomes. For technical practitioners, emphasize orchestration, evaluation design, constraints, baseline comparisons, and change management.
