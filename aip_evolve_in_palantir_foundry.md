@@ -24,7 +24,6 @@ AIP Evolve is part of Palantir's broader Artificial Intelligence Platform (AIP).
 | Deploy | Operationalize AI | Integrate AI into business processes and applications |
 | Evolve | Improve existing AI | Explore changes, validate outcomes, and review proposals |
 
-*This is an explanatory framework, not an official Palantir maturity model.*
 
 ## 2. The Problem: Why Is AIP Evolve Needed?
 
