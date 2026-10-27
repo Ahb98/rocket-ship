@@ -5,7 +5,7 @@
 
 Enterprise AI development does not end when an application goes live. Over time, organizations need to reduce operating costs, improve response times, maintain output quality, and adapt to changing models and business requirements.
 
-**AIP Evolve is a Palantir Foundry capability that coordinates fleets of AI Forward Deployed Engineer (AI FDE) agents to improve existing AI systems.** Users define the target, optimization goal, validation strategy, and operational constraints. The agents explore potential improvements, evaluate candidate changes, and prepare a proposal for review before changes are merged.
+**AIP Evolve is a Palantir Foundry capability that coordinates fleets of AI Forward Deployed Engineer (AI FDE) agents to improve existing AI systems. AI FDE is Palantir's AI-powered engineering interface that translates natural-language requests into Foundry operations. It can work with data pipelines, code repositories, Ontology resources, and AI functions using the tools and context made available to it. Within AIP Evolve, multiple AI FDE agents coordinate specialized tasks such as investigating the target, generating test cases, exploring model or prompt alternatives, evaluating results, and preparing a proposal. The exact activities depend on the optimization objective and workflow. ** Users define the target, optimization goal, validation strategy, and operational constraints. The agents explore potential improvements, evaluate candidate changes, and prepare a proposal for review before changes are merged.
 
 Common optimization goals include:
 - Reducing model inference costs.
@@ -69,7 +69,7 @@ flowchart TD
 1. **Select the target:** Identify the AI function or workflow to improve.
 2. **Define the goal:** Choose an objective such as cost reduction, lower latency, model migration, or evaluation-score improvement.
 3. **Set validation and constraints:** Select representative test cases or evaluation suites, configure scoring criteria and acceptable output divergence, and limit permitted changes and iterations.
-4. **Explore alternatives:** AI FDE coordinates engineering activities to inspect the target, explore candidate changes, and evaluate their results.
+4. **Explore alternatives:** AI FDE coordinates engineering activities to inspect the target, explore candidate changes, and evaluate their results. During an evolution, the agent activity graph provides visibility into the work being performed. Depending on the task, specialized agents may investigate the existing implementation, create representative test cases, explore model substitutions, refine prompts, evaluate candidate outputs, and prepare the final proposal. This allows engineers to inspect not only the recommended result but also the activities and artifacts that led to it.
 5. **Compare results:** Review the baseline and candidate outputs, evaluation results, supporting evidence, and confidence assessments.
 6. **Review and merge:** Inspect the proposed changes through Global Branching, where applicable, before merging.
 7. **Measure operational impact:** Confirm that the adopted change delivers the intended business outcome.
@@ -91,11 +91,13 @@ AIP Evolve operates within the wider Foundry environment. The following diagram 
 |---|---|---|
 | AIP Evolve | Coordinate the optimization process | Defines the goal and manages the evolution workflow |
 | AI FDE | Execute engineering tasks using an AI agent | Explores and evaluates candidate changes |
-| AIP Evals | Test AI functions using test cases and evaluation criteria | Can provide a structured way to assess candidate quality |
+| AIP Evals | Evaluate AI functions using test cases, expected outputs, and evaluation functions. | Existing evaluation suites can provide a structured validation strategy for candidate changes. AIP Evolve can also use selected test cases as part of its evolution workflow. AIP Evals helps teams measure output quality, compare function versions or models, and examine variation across repeated runs. |
 | Ontology | Model enterprise objects, relationships, logic, and actions | Required installation context for the AIP Evolve Marketplace product |
 | Global Branching | Manage and review proposed changes | Supports review before changes are merged |
 | Workshop | Build operational applications and interfaces | May host the business workflow using the AI capability being optimized |
 | Datasets and pipelines | Provide and transform enterprise data | May supply the data and context used by the target AI system or its validation |
+
+Important distinction: AIP Evals is the evaluation capability; AIP Evolve is the optimization workflow. Evals helps determine whether a candidate meets defined criteria, while Evolve coordinates the exploration of candidate improvements. An evaluation score alone does not establish that a change is safe or suitable for production.
 
 AIP Evolve requires AIP to be enabled, access to AI FDE, installation of the AIP Evolve Marketplace product in an Ontology, and access to the target resource and any validation data or evaluation suites used.
 
