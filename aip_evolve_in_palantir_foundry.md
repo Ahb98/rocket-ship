@@ -16,6 +16,15 @@ Common optimization goals include:
 
 AIP Evolve is part of Palantir's broader Artificial Intelligence Platform (AIP). It focuses on improving existing AI implementations rather than replacing the tools used to build applications, manage enterprise data, or deliver operational workflows.
 
+### Understanding AI FDE
+
+AI FDE is an AI-powered engineering capability that enables users to interact with Foundry resources through natural-language instructions and available tools. Depending on its configured permissions and context, it can inspect resources, work with code repositories, modify data transformations, develop functions, and execute engineering operations.
+
+Within AIP Evolve, AI FDE agents perform coordinated engineering activities to explore and validate potential improvements. Rather than simply suggesting an optimization, they can investigate an existing implementation, experiment with alternatives, examine results, and prepare supporting artifacts for review.
+
+The distinction is important: AI FDE is the engineering capability; AIP Evolve coordinates AI FDE agents for the specific purpose of optimizing existing AI systems.
+
+
 ### The evolution of enterprise AI
 
 | Stage | Focus | Key activity |
@@ -52,17 +61,18 @@ AIP Evolve turns an optimization objective into an iterative engineering workflo
 flowchart TD
     A["Select existing AI resource"] --> B["Define optimization goal"]
     B --> C["Configure validation and constraints"]
-    C --> D["AIP Evolve launches AI FDE"]
+    C --> D["Orchestrate AI FDE agents"]
     D --> E["Explore candidate changes"]
     E --> F["Evaluate against baseline"]
-    F --> G["Prepare proposal and supporting evidence"]
-    G --> H{"Review and approve?"}
-    H -- "Approve" --> I["Review and merge changes"]
+    F --> G["Prepare proposal and evidence"]
+    G --> H{"Review proposal"}
+    H -- "Accept" --> I["Review and merge, where applicable"]
     H -- "Revise" --> J["Provide additional instructions"]
     J --> D
-    I --> K["Measure results after adoption"]
+    I --> K["Measure operational impact"]
 ```
 
+This is a conceptual representation of the optimization lifecycle, not an exact depiction of the platform's internal architecture.
 
 ### Key steps
 
@@ -74,9 +84,20 @@ flowchart TD
 6. **Review and merge:** Inspect the proposed changes through Global Branching, where applicable, before merging.
 7. **Measure operational impact:** Confirm that the adopted change delivers the intended business outcome.
 
+### Visibility into agent activity
+
+AIP Evolve provides an agent graph that allows users to follow the work performed during an evolution. Depending on the task, this can show specialist activities related to analysis, test-case creation, model selection, evaluation, prompt engineering, and proposal preparation.
+
+This provides visibility into the optimization process, not just its final recommendation. Engineers can inspect agent goals, insights, and artifacts to understand how candidate changes were explored and evaluated.
+
+Review does not mean automatic production deployment. AIP Evolve presents a proposal for review. When applicable, users can inspect proposed changes through Global Branching or the relevant code review workflow. They can also resume the evolution in AI FDE with additional instructions.
+
+The workflow should not be interpreted as a guarantee that every candidate passing evaluation will be merged or deployed automatically.
+
 The key distinction is that AIP Evolve does more than suggest a change. It coordinates iterative exploration and validation against a defined objective, then presents a proposal for review.
 
 However, passing an evaluation is not proof of production correctness. Test coverage, representative data, evaluation quality, and appropriate human review remain essential.
+
 
 ## 4. Integration With the Foundry Ecosystem
 
@@ -100,6 +121,39 @@ AIP Evolve operates within the wider Foundry environment. The following diagram 
 AIP Evolve requires AIP to be enabled, access to AI FDE, installation of the AIP Evolve Marketplace product in an Ontology, and access to the target resource and any validation data or evaluation suites used.
 
 Workshop is part of the broader Foundry ecosystem, but it is not a universal prerequisite for using AIP Evolve.
+
+### AIP Evals: The evaluation layer
+
+#### Understanding AIP Evals
+
+AIP Evals is a testing environment designed to evaluate AI functions, including supported AIP Logic, chatbot, and code-authored functions. It supports structured testing of AI systems, where output variability makes conventional one-off testing insufficient.
+
+An evaluation suite can include:
+
+Target functions: The AI functions being tested.
+
+Test cases: Inputs and, where appropriate, expected outputs.
+
+Evaluation functions: Rules or evaluators that compare actual outputs against expectations.
+
+Metrics: Results used to assess performance at the individual test-case level and across a suite.
+
+AIP Evals supports built-in evaluators, such as exact-match and regular-expression matching, alongside custom evaluation functions and LLM-as-a-judge evaluation where appropriate.
+
+Evaluation suites can be used to compare different target functions on the same test cases and examine variation across runs.
+
+Within AIP Evolve, users can select test cases or existing evaluation suites as part of the validation strategy. The choice depends on the target and optimization objective.
+
+Important distinction: AIP Evals measures whether a function meets defined evaluation criteria. AIP Evolve coordinates the exploration of candidate improvements. The two capabilities complement each other, but they serve different purposes.
+
+### AI FDE and governance
+
+#### Engineering controls and review
+
+AI FDE operates within the user's existing Foundry permissions and can be configured with specific tools and context. Depending on the workflow, it can propose changes through Global Branching or a Code Repository pull request for review.
+
+This helps teams retain visibility over engineering actions and apply existing access controls. However, permissions and branching do not eliminate the need to verify generated code, validate business logic, and review proposed changes before production use.
+
 
 ## 5. How AIP Evolve Differs From Other Foundry Capabilities
 
@@ -143,6 +197,58 @@ Inspect the recommended changes, cost measurements, output comparisons, evaluati
 
 After adoption, measure performance under comparable workloads and verify that the optimization has not introduced unacceptable regressions.
 
+### Documented example: Cost optimization in AIP Evolve
+
+#### Quantitative evidence from Palantir's documentation
+
+Palantir's official AIP Evolve documentation provides an example of optimizing an AI-powered inventory allocation workflow.
+
+In that example, the candidate used a different model and prompt guardrails. The baseline and candidate both passed all 10 selected test cases, while average compute cost decreased by 65%.
+
+
+| Metric                     | Baseline              | Candidate             |
+|----------------------------|----------------------:|----------------------:|
+| Average compute per call   | 204.6 compute-seconds | 72.4 compute-seconds  |
+| Selected test cases passed | 10 of 10              | 10 of 10              |
+
+
+This is a documented example, not a guarantee of typical savings. The result applies to the example's workload and evaluation strategy. Passing 10 test cases does not prove equivalence across every possible input, and compute-seconds should not be confused with end-to-end response latency or monetary cost.
+
+### Additional example: Optimizing an insurance claims assistant
+
+#### Illustrative business use case
+
+Consider an insurance organization using an AI function to extract information from claim documents and generate structured summaries for claims handlers.
+
+The existing function is operational, but the organization wants to migrate to a more economical model without compromising the accuracy of critical claim information.
+
+Step 1 — Establish the baseline
+
+Record the current model, average inference cost, response latency, and evaluation results for representative claims.
+
+Step 2 — Define the optimization objective
+
+Configure the evolution to reduce cost while preserving the required extraction quality. Establish constraints around permitted model and prompt changes.
+
+Step 3 — Explore candidate improvements
+
+AI FDE agents investigate the existing function and explore candidate changes, such as alternative models or prompt modifications.
+
+Step 4 — Validate the candidates
+
+Use representative test cases or an existing evaluation suite to assess whether critical fields are extracted correctly and the expected output structure is maintained.
+
+Step 5 — Review the proposal
+
+Compare cost, latency, evaluation results, and sample outputs. Pay particular attention to critical errors, such as incorrect policy numbers or claim amounts.
+
+Step 6 — Measure the business impact
+
+After the change is adopted, compare operational performance under equivalent conditions and verify that the reduction in cost has not introduced unacceptable errors.
+
+This is a hypothetical scenario illustrating how cost optimization can be combined with quality constraints and engineering review. It is not a claim of a measured customer outcome.
+
+
 ### Suggested business KPIs
 
 | Intended outcome | KPI |
@@ -168,14 +274,20 @@ Its value can be considered from three perspectives:
 - **Architects and engineers:** A structured process for agent-driven experimentation, evaluation, and proposed changes.
 - **Governance teams:** An opportunity to combine explicit constraints, evaluation evidence, and review practices with human oversight.
 
+### The relationship between the capabilities
+
+AI FDE provides the engineering capabilities, AIP Evals helps measure function performance, and AIP Evolve coordinates iterative optimization. Global Branching and Code Repository review workflows can support controlled change management, depending on the resources involved.
+
 The results still depend on sound evaluation design, representative test cases, appropriate permissions, and disciplined review. AIP Evolve should therefore be viewed as an optimization capability—not a guarantee of autonomous, risk-free improvement.
 
-**In short:** Foundry provides the environment to build and operate enterprise AI solutions; AIP Evolve helps teams systematically improve those solutions over time.
+In short: Foundry provides the environment to build and operate enterprise AI solutions; AI FDE enables agent-driven engineering; AIP Evals measures AI function performance; and AIP Evolve coordinates the process of systematically improving existing AI systems over time.
 
 ### References
 
 1. [Palantir — AIP Evolve overview](https://www.palantir.com/docs/foundry/aip-evolve/overview)
 2. [Palantir — AI FDE overview](https://www.palantir.com/docs/foundry/ai-fde/overview)
 3. [Palantir — AIP Evals overview](https://www.palantir.com/docs/foundry/aip-evals/overview)
+4. [Palantir — Global Branching overview](https://www.palantir.com/docs/foundry/global-branching)
+5. [Palantir — AI FDE best practices](https://www.palantir.com/docs/foundry/ai-fde/best-practices)
 
 ---
