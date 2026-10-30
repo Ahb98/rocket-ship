@@ -1,6 +1,16 @@
 # AIP Evolve in Palantir Foundry
 *Advancing Enterprise AI Through Agent-Driven Optimization*
 
+## Collab
+
+1. [Anudeep Chatradi](https://github.com/anudeepchatradi), [LinkedIn](https://www.linkedin.com/in/anudeep-chatradi-78757298/)
+2. [Ankita Hatibaruah](https://github.com/Ahb98), [LinkedIn](http://linkedin.com/in/ankita-hatibaruah-bb2a62218)    
+
+
+## TL;DR
+
+AIP Evolve is a Palantir Foundry capability that coordinates AI Forward Deployed Engineer (AI FDE) agents to systematically optimize existing enterprise AI systems. By combining goal-driven engineering, iterative experimentation, and structured evaluation through capabilities such as AIP Evals, it helps teams explore improvements in inference cost, latency, and output quality while maintaining validation and human oversight. This article explores how AIP Evolve works, how it integrates with the broader Foundry ecosystem, how it differs from other AIP capabilities, and how organizations can use it to drive measurable improvements in production AI workflows.
+
 ## 1. What Is AIP Evolve?
 
 Enterprise AI development does not end when an application goes live. Over time, organizations need to reduce operating costs, improve response times, maintain output quality, and adapt to changing models and business requirements.
